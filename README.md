@@ -10,7 +10,7 @@ Node.js 20+ is sufficient; no dependencies or install step are required.
 npm run dev
 ```
 
-Open http://localhost:3000. The home page, `/gallery/` and the ecology initiative and locally saved action checklist at `/ekologiya/` work directly. `npm test` checks JavaScript syntax.
+Open http://localhost:3000. The home page, `/gallery/` and the ecology guidance and locally generated report tool at `/ekologiya/` work directly. `npm test` checks JavaScript syntax.
 
 ## Deploy from this repository to Vercel
 
@@ -19,7 +19,7 @@ Open http://localhost:3000. The home page, `/gallery/` and the ecology initiativ
 - Output directory: **.**
 - Install command: leave empty
 
-The app is plain HTML/CSS/JavaScript. `vercel.json` supplies the gallery rewrites. All photos, fonts and graphics are included locally, so the deployed app does not rely on a temporary preview server. External links are only for attribution and further reading.
+The app is plain HTML/CSS/JavaScript. `vercel.json` supplies the gallery and ecology rewrites. All photos, fonts and graphics are included locally, so the deployed app does not rely on a temporary preview server. External links are only for attribution and further reading.
 
 ## GitHub repository
 
@@ -42,7 +42,7 @@ Native dialogs, Escape and arrow-key support, keyboard city tabs, reduced-motion
 
 ## Credits and limitations
 
-Visual inspiration: [The Message to Ukraine by Obys](https://themessagetoukraine.obys.agency/). This is an independent reinterpretation, not an Obys project. The reference site's source code, Ukrainian copy and original photography were not reused. Uzbek copy and SVG graphics and an AI-assisted mountain engraving were created for this adaptation.
+Visual inspiration: [The Message to Ukraine by Obys](https://themessagetoukraine.obys.agency/). This is an independent reinterpretation, not an Obys project. The reference site's source code, Ukrainian copy and original photography were not reused. Uzbek copy and SVG graphics and the AI-assisted mountain engraving and river illustration were created for this adaptation.
 
 Photos: Pexels and Unsplash; individual source links are in `assets/credits.json` and the on-site credits dialog. Font families: Manrope and Cormorant Garamond (SIL Open Font License). Photograph usage remains subject to each source platform's license.
 

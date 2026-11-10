@@ -242,13 +242,15 @@ const hero=$('.hero'), heroColumns=$$('.year-column');
 const rings=$$('.food-ring'), foodStar=$('.food-star');
 const soul=$('.soul'), soulSky=$('.soul-sky'), soulStar=$('.soul-center .little-star');
 const outro=$('.outro-collage'), outroNote=$('.outro-note');
+const introScene=$('.intro-postcards'), introImages=$$('.intro-photo img');
+const poemBird=$('.poem-bird'), bookBird=$('.book-bird'), outroBird=$('.outro-bird');
 let lastChapter='';
 function updateScroll(){
  ticking=false;
  const y=window.scrollY, h=window.innerHeight;
  const maxScroll=document.documentElement.scrollHeight-h;
  const footerTop=footer.getBoundingClientRect().top;
- let activeChapter='', poemIndex=null, foodProgress=null, mountainProgress=null, bookProgress=null, heroProgress=null, soulProgress=null, outroProgress=null, parallax=[];
+ let activeChapter='', poemIndex=null, foodProgress=null, mountainProgress=null, bookProgress=null, heroProgress=null, soulProgress=null, outroProgress=null, introProgress=null, poemProgress=null, parallax=[];
  if(route==='home'){
   let active=chapters[0];
   for(const chapter of chapters){if(chapter.getBoundingClientRect().top<h*.45)active=chapter;}
@@ -257,8 +259,11 @@ function updateScroll(){
   if(pr.bottom>0&&pr.top<h){
    const p=clamp(-pr.top/Math.max(1,pr.height-h));
    poemIndex=Math.min(3,Math.floor(p*4));
+   if(!reducedMotion)poemProgress=p;
   }
   if(!reducedMotion){
+   const ir=introScene.getBoundingClientRect();
+   if(ir.bottom>0&&ir.top<h)introProgress=clamp((h-ir.top)/(h+ir.height));
    const hr=hero.getBoundingClientRect();
    if(hr.bottom>0&&hr.top<h)heroProgress=clamp(-hr.top/Math.max(1,hr.height));
    const sr=soul.getBoundingClientRect();
@@ -300,14 +305,16 @@ function updateScroll(){
   rings.forEach((ring,i)=>{ring.style.transform=`rotate(${i?25-p*50:-15+p*40}deg) scaleY(.74)`;});
   foodStar.style.rotate=`${(p-.5)*70}deg`;
  }
+ if(introProgress!==null)introImages.forEach((image,i)=>{image.style.transform=`scale(1.06) translateY(${((introProgress-.5)*(i?3:-3)).toFixed(2)}%)`;});
+ if(poemProgress!==null)poemBird.style.rotate=`${((poemProgress-.5)*25).toFixed(1)}deg`;
  if(heroProgress!==null)heroColumns.forEach((column,i)=>{column.style.translate=`0 ${(-heroProgress*(12+i*8)).toFixed(1)}px`;});
  if(soulProgress!==null){soulSky.style.transform=`scale(1.08) translateY(${((soulProgress-.5)*-4).toFixed(2)}%)`;soulStar.style.rotate=`${((soulProgress-.5)*90).toFixed(1)}deg`;}
- if(outroProgress!==null)outroNote.style.translate=`0 ${((outroProgress-.5)*-25).toFixed(1)}px`;
+ if(outroProgress!==null){outroNote.style.translate=`0 ${((outroProgress-.5)*-25).toFixed(1)}px`;outroBird.style.rotate=`${((outroProgress-.5)*28).toFixed(1)}deg`;}
  if(mountainProgress!==null){
   mountainArt.style.transform=`scale(1.04) translateY(${((mountainProgress-.5)*-3).toFixed(2)}%)`;
   mountainNote.style.translate=`0 ${((mountainProgress-.5)*-24).toFixed(1)}px`;
  }
- if(bookProgress!==null)bookBack.style.translate=`0 ${((bookProgress-.5)*-24).toFixed(1)}px`;
+ if(bookProgress!==null){bookBack.style.translate=`0 ${((bookProgress-.5)*-24).toFixed(1)}px`;bookBird.style.rotate=`${((bookProgress-.5)*30).toFixed(1)}deg`;}
  parallax.forEach(({item,amount})=>{item.style.translate=`0 ${amount.toFixed(1)}px`;});
 }
 function requestTick(){if(!ticking){requestAnimationFrame(updateScroll);ticking=true;}}
@@ -323,6 +330,8 @@ function onMotionPreferenceChange(event){
   parallaxItems.forEach(item=>item.style.removeProperty('translate'));
   editorialAnimations.forEach(animation=>animation.cancel());
   heroColumns.forEach(column=>column.style.removeProperty('translate'));
+  introImages.forEach(image=>image.style.removeProperty('transform'));
+  [poemBird,bookBird,outroBird].forEach(bird=>bird.style.removeProperty('rotate'));
   rings.forEach(ring=>ring.style.removeProperty('transform'));foodStar.style.removeProperty('rotate');
   soulSky.style.removeProperty('transform');soulStar.style.removeProperty('rotate');outroNote.style.removeProperty('translate');
   mountainArt.style.removeProperty('transform');mountainNote.style.removeProperty('translate');bookBack.style.removeProperty('translate');
