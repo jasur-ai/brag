@@ -36,15 +36,16 @@ test('engraving has the correct image content type', async () => {
 });
 
 
-test('ecology has a refill solution and impact estimator', async () => {
+test('ecology explains an evidence-backed deposit-return proposal', async () => {
   for (const route of ['/ekologiya', '/ekologiya/']) {
     const response = await fetch(base + route);
     assert.equal(response.status, 200, route);
     const html = await response.text();
     assert.match(html, /id="yechim"/);
-    assert.match(html, /id="refill-form"/);
-    assert.match(html, /id="bottle-result"/);
-    assert.match(html, /id="money-result"/);
+    assert.match(html, /id="manbalar"/);
+    assert.match(html, /Qaytariladigan garov/i);
+    assert.match(html, /91,9/);
+    assert.doesNotMatch(html, /<form|hisoblagich|kalkulyator/i);
     assert.doesNotMatch(html, /murojaat/i);
     assert.doesNotMatch(html, /Yilning eng yaxshi ekologiya/);
   }

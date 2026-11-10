@@ -16,32 +16,6 @@ if ('IntersectionObserver' in window) {
   $$('.story-step').forEach(element => element.classList.add('active'));
 }
 
-// Estimates use the visitor's inputs, not a measured environmental outcome.
-const refillForm = $('#refill-form');
-const inputIds = ['bottles', 'price', 'refill-cost', 'bottle-cost'];
-const inputs = inputIds.map(id => document.getElementById(id));
-const formatNumber = number => String(number).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-const bottleResult = $('#bottle-result'), moneyResult = $('#money-result');
-const moneyLabel = $('#money-label'), calcError = $('.calc-error');
-function calculate() {
-  const valid = inputs.every(input => input.value !== '' && input.validity.valid && Number.isFinite(input.valueAsNumber));
-  if (!valid) {
-    bottleResult.textContent = '—'; moneyResult.textContent = '—';
-    moneyLabel.textContent = 'BIRINCHI YILDAGI TAXMINIY FARQ';
-    calcError.textContent = 'Barcha maydonlarga ruxsat etilgan oraliqda butun son kiriting.';
-    return;
-  }
-  const [bottles, price, refill, container] = inputs.map(input => input.valueAsNumber);
-  const difference = (bottles * price - refill) * 52 - container;
-  bottleResult.textContent = formatNumber(bottles * 52);
-  moneyResult.textContent = formatNumber(Math.abs(difference));
-  moneyLabel.textContent = difference < 0 ? 'BIRINCHI YILDAGI QO‘SHIMCHA XARAJAT' : difference === 0 ? 'BIRINCHI YILDA XARAJAT FARQI YO‘Q' : 'BIRINCHI YILDAGI TAXMINIY TEJAM';
-  calcError.textContent = '';
-}
-refillForm.addEventListener('submit', event => event.preventDefault());
-inputs.forEach(input => input.addEventListener('input', calculate));
-calculate();
-
 // One rAF per scroll: decorative transforms do not affect document flow.
 const art = $('.story-art-frame'), storyLayout = $('.story-layout'), artImage = art.querySelector('img'), artLabel = $('.story-art-label');
 const progress = $('.eco-progress span');
