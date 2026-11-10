@@ -1,0 +1,14 @@
+node_modules/
+.vercel/
+.cache/
+contact.jpg
+screenshots/
+*.zip
+get_assets.py
+download.py
+make_design_assets.py
+assets/fonts-google.css
+deployment-source.json.gz
+test_site.py
+bootstrap.cjs
+deploy-upload.json

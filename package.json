@@ -1,0 +1,1 @@
+{"name":"ozbekistonga-maktub","version":"1.0.0","private":true,"description":"An original interactive love letter to Uzbekistan, inspired by Obys.","scripts":{"dev":"node server.cjs","start":"node server.cjs","test":"node --check app.js"}}

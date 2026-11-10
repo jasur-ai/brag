@@ -1,0 +1,107 @@
+[
+  {
+    "key": "registan",
+    "caption": "Registon, Samarqand",
+    "source": "Unsplash",
+    "url": "https://images.unsplash.com/photo-1787472259744-be2c02928b87?auto=format&fit=crop&w=1400&q=85",
+    "page": "https://unsplash.com/s/photos/uzbekistan"
+  },
+  {
+    "key": "mountains",
+    "caption": "Chorvoq, Toshkent viloyati",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/26729708/pexels-photo-26729708.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/26729708/"
+  },
+  {
+    "key": "charvak",
+    "caption": "Chorvoq sohillari",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/30827061/pexels-photo-30827061.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/30827061/"
+  },
+  {
+    "key": "shahi",
+    "caption": "Shohi Zinda, Samarqand",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/19439170/pexels-photo-19439170.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/19439170/"
+  },
+  {
+    "key": "dome",
+    "caption": "Samarqand koshinlari",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/19439144/pexels-photo-19439144.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/19439144/"
+  },
+  {
+    "key": "samarkand",
+    "caption": "Shohi Zinda majmuasi",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/16534573/pexels-photo-16534573.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/16534573/"
+  },
+  {
+    "key": "bibi",
+    "caption": "Bibixonim, Samarqand",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/19439200/pexels-photo-19439200.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/19439200/"
+  },
+  {
+    "key": "street",
+    "caption": "Samarqand ko‘chalari",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/19839437/pexels-photo-19839437.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/19839437/"
+  },
+  {
+    "key": "tashkent",
+    "caption": "Toshkent me’morchiligi",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/19227998/pexels-photo-19227998.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/19227998/"
+  },
+  {
+    "key": "art",
+    "caption": "Hazrati Imom, Toshkent",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/19227987/pexels-photo-19227987.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/19227987/"
+  },
+  {
+    "key": "bread",
+    "caption": "Tandir non",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/39597532/pexels-photo-39597532.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/39597532/"
+  },
+  {
+    "key": "plov",
+    "caption": "O‘zbek palovi",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/32558904/pexels-photo-32558904.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/32558904/"
+  },
+  {
+    "key": "cooking",
+    "caption": "Toshkent dasturxoni",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/39561317/pexels-photo-39561317.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/39561317/"
+  },
+  {
+    "key": "bukhara",
+    "caption": "Poyi Kalon, Buxoro",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/39411349/pexels-photo-39411349.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/39411349/"
+  },
+  {
+    "key": "khiva",
+    "caption": "Ichan qal’a, Xiva",
+    "source": "Pexels",
+    "url": "https://images.pexels.com/photos/35375813/pexels-photo-35375813.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    "page": "https://www.pexels.com/photo/35375813/"
+  }
+]
