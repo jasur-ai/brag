@@ -28,6 +28,7 @@ let menuReturnFocus = null;
 let lastPoemIndex = -1;
 let ticking = false;
 let toastTimeout;
+let aboutCloseTimer;
 const dialogStack = [];
 
 function createPhotoCard(photo, index, preview = false) {
@@ -73,6 +74,7 @@ function closeDialog(el){
  if(!dialogStack.length)document.body.classList.remove('locked');
 }
 function openMenu(){
+ clearTimeout(aboutCloseTimer);
  menuReturnFocus=document.activeElement;
  const dialog=$('#site-menu');dialog.classList.remove('about-open');$('.about-panel').hidden=true;
  $('.about-toggle').setAttribute('aria-expanded','false');
@@ -86,6 +88,7 @@ $('.menu-toggle').addEventListener('click',()=>$('#site-menu').open?closeMenu():
 $('.menu-close').addEventListener('click',closeMenu);
 $('#site-menu').addEventListener('cancel',e=>{e.preventDefault();if($('#site-menu').classList.contains('about-open'))closeAbout();else closeMenu();});
 function showAbout(){
+ clearTimeout(aboutCloseTimer);
  const panel=$('.about-panel');panel.hidden=false;
  requestAnimationFrame(()=>$('#site-menu').classList.add('about-open'));
  $('.about-toggle').setAttribute('aria-expanded','true');
@@ -93,7 +96,8 @@ function showAbout(){
 }
 function closeAbout(){
  $('#site-menu').classList.remove('about-open');$('.about-toggle').setAttribute('aria-expanded','false');
- setTimeout(()=>{$('.about-panel').hidden=true;$('.about-toggle').focus({preventScroll:true});},500);
+ clearTimeout(aboutCloseTimer);
+ aboutCloseTimer=setTimeout(()=>{$('.about-panel').hidden=true;if($('#site-menu').open)$('.about-toggle').focus({preventScroll:true});},500);
 }
 $('.about-toggle').addEventListener('click',showAbout);
 $('.about-back').addEventListener('click',closeAbout);
@@ -106,7 +110,7 @@ function navigate(next,push=true){
  $('.chapter-indicator').style.display=next==='home'?'':'none';
  document.title=next==='gallery'?'Xotiralar galereyasi — O‘zbekistonga maktub':'O‘zbekistonga maktub — Bir yurt. Ming bir hikoya.';
  if(push&&changed)history.pushState({route:next},'',next==='gallery'?'/gallery/':'/');
- if(changed||!push)window.scrollTo({top:0,behavior:'instant'});
+ if(changed||!push||next==='home')window.scrollTo({top:0,behavior:'instant'});
  if(changed)$('#main').focus({preventScroll:true});
  requestTick();
 }
@@ -163,7 +167,7 @@ function selectCity(button){
  $$('.city-tab').forEach(b=>{const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;});
  $('#city-panel').setAttribute('aria-labelledby',button.id);
  const image=$('#city-image');image.style.opacity='.35';
- image.onload=()=>{image.style.opacity='1';};image.src=`/assets/${city.image}.jpg`;image.alt=city.alt;
+ image.onload=()=>{image.style.opacity='1';};image.onerror=()=>{image.style.opacity='1';};image.src=`/assets/${city.image}.jpg`;image.alt=city.alt;
  if(image.complete)image.style.opacity='1';
  $('#city-photo-caption').textContent=city.caption;$('#city-coordinate').textContent=city.coordinate;$('#city-copy').textContent=city.copy;
 }
@@ -242,12 +246,3 @@ window.addEventListener('scroll',requestTick,{passive:true});window.addEventList
 window.addEventListener('load',requestTick);requestTick();
 // Recover gracefully if a photograph fails: keep the caption and paper composition visible.
 $$('img').forEach(image=>image.addEventListener('error',()=>{image.style.opacity='.2';image.style.background='#baa17c';}));
-
-// Build a lightweight, original engraved landscape at runtime.
-(() => {
- const image=$('.mountain-engraving');if(!image)return;
- let paths='';
- for(let ridge=0;ridge<3;ridge++){for(let line=0;line<76;line++){let points='';for(let x=-20;x<=1620;x+=12){const xx=x/1600;const summit=250*Math.exp(-Math.pow((xx-(.24+ridge*.25))/.13,2))+110*Math.exp(-Math.pow((xx-.74)/.17,2));const y=330+ridge*70-summit+line*2.3+8*Math.sin(x*.025+line*.17)+5*Math.sin(x*.063+line*.11);points+=x+','+y.toFixed(1)+' ';}paths+='<polyline points="'+points+'" fill="none" stroke="#ead5b8" stroke-opacity="'+(.55+line%5*.08)+'" stroke-width="'+(line%3?.65:1.1)+'"/>';}}
- const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800">'+paths+'</svg>';
- image.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
-})();
