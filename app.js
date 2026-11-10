@@ -217,13 +217,15 @@ const footer=$('.footer');
 const poemLines=[$('.poem-before'),$('.poem-current'),$('.poem-after')];
 const poemDots=$$('.poem-dots b');
 const plate=$('.food-plate'), bread=$('.food-bread'), foodQuestion=$('.food-question');
+const mountainScene=$('.mountain-scene'), mountainArt=$('.mountain-engraving'), mountainNote=$('.mountain-note');
+const bookScene=$('.book-collage'), bookBack=$('.book-back');
 let lastChapter='';
 function updateScroll(){
  ticking=false;
  const y=window.scrollY, h=window.innerHeight;
  const maxScroll=document.documentElement.scrollHeight-h;
  const footerTop=footer.getBoundingClientRect().top;
- let activeChapter='', poemIndex=null, foodProgress=null, parallax=[];
+ let activeChapter='', poemIndex=null, foodProgress=null, mountainProgress=null, bookProgress=null, parallax=[];
  if(route==='home'){
   let active=chapters[0];
   for(const chapter of chapters){if(chapter.getBoundingClientRect().top<h*.45)active=chapter;}
@@ -236,9 +238,13 @@ function updateScroll(){
   if(!reducedMotion){
    const fr=food.getBoundingClientRect();
    if(fr.bottom>0&&fr.top<h)foodProgress=clamp(-fr.top/Math.max(1,fr.height-h));
+   const mr=mountainScene.getBoundingClientRect();
+   if(mr.bottom>0&&mr.top<h)mountainProgress=clamp((h-mr.top)/(h+mr.height));
+   const br=bookScene.getBoundingClientRect();
+   if(br.bottom>0&&br.top<h)bookProgress=clamp((h-br.top)/(h+br.height));
    parallax=parallaxItems.map(item=>({item,rect:item.parentElement.getBoundingClientRect()}))
     .filter(({rect})=>rect.bottom>=0&&rect.top<=h)
-    .map(({item,rect})=>({item,amount:(rect.top-h*.35)*Number(item.dataset.parallax)}));
+    .map(({item,rect})=>({item,amount:clamp((rect.top-h*.35)*Number(item.dataset.parallax), window.innerWidth<651?-10:-18, window.innerWidth<651?10:18)}));
   }
  }
  progressBar.style.transform=`scaleX(${maxScroll>0?clamp(y/maxScroll):0})`;
@@ -246,8 +252,15 @@ function updateScroll(){
  if(route!=='home')return;
  if(activeChapter!==lastChapter){chapterLabel.textContent=activeChapter;lastChapter=activeChapter;}
  if(poemIndex!==null&&poemIndex!==lastPoemIndex){
+  const animateChange=lastPoemIndex!==-1&&!reducedMotion;
   lastPoemIndex=poemIndex;
-  poemLines.forEach((line,i)=>{line.textContent=poemVerses[poemIndex][i];});
+  poemLines.forEach((line,i)=>{
+   line.textContent=poemVerses[poemIndex][i];
+   if(animateChange && line.animate){
+    line.getAnimations().forEach(animation=>animation.cancel());
+    line.animate([{opacity:0,translate:'0 12px'},{opacity:i===1?1:.18,translate:'0 0'}],{duration:600,delay:i*55,easing:'cubic-bezier(.22,1,.36,1)'});
+   }
+  });
   poemDots.forEach((dot,i)=>dot.classList.toggle('active',i===poemIndex));
  }
  if(foodProgress!==null){
@@ -256,6 +269,11 @@ function updateScroll(){
   bread.style.transform=`translate(${(p-.5)*-10}vw,${Math.cos(p*Math.PI)*20}px) rotate(${22-p*28}deg)`;
   foodQuestion.style.transform=`translateX(${(p-.5)*-8}vw)`;
  }
+ if(mountainProgress!==null){
+  mountainArt.style.transform=`scale(1.04) translateY(${((mountainProgress-.5)*-3).toFixed(2)}%)`;
+  mountainNote.style.translate=`0 ${((mountainProgress-.5)*-24).toFixed(1)}px`;
+ }
+ if(bookProgress!==null)bookBack.style.translate=`0 ${((bookProgress-.5)*-24).toFixed(1)}px`;
  parallax.forEach(({item,amount})=>{item.style.translate=`0 ${amount.toFixed(1)}px`;});
 }
 function requestTick(){if(!ticking){requestAnimationFrame(updateScroll);ticking=true;}}
@@ -269,6 +287,8 @@ function onMotionPreferenceChange(event){
  reducedMotion=event.matches;
  if(reducedMotion){
   parallaxItems.forEach(item=>item.style.removeProperty('translate'));
+  mountainArt.style.removeProperty('transform');mountainNote.style.removeProperty('translate');bookBack.style.removeProperty('translate');
+  poemLines.forEach(line=>line.getAnimations?.().forEach(animation=>animation.cancel()));
   ['.food-plate','.food-bread','.food-question'].forEach(selector=>$(selector).style.removeProperty('transform'));
  }
  requestTick();

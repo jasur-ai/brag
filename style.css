@@ -137,3 +137,27 @@ i{letter-spacing:-.035em}
 /* Ecology is a separate, focused editorial experience. */
 .ecology-teaser{margin-top:35px;max-width:380px;gap:20px}.menu-link-group{width:100%;text-align:center;display:flex;flex-direction:column;align-items:center}.menu-link-group .menu-nav{padding-bottom:12px}.menu-eco-link{font-size:12px;letter-spacing:.02em;padding:12px 8px;border-bottom:1px solid currentColor}.menu-eco-link span{display:inline-block;transition:transform .35s}.menu-eco-link:hover span{transform:translate(3px,-3px)}@media(max-width:650px){.menu-eco-link{font-size:10px;padding:8px 4px}.ecology-teaser{margin-top:26px}}
 .menu-link-group .menu-arrow{pointer-events:none}.menu-link-group .menu-eco-link{position:relative;z-index:1}
+
+/* Photographs have room to breathe: no caption is hidden behind another sheet. */
+.intro{overflow:clip}
+.intro-postcards{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(18px,2.8vw,44px);height:auto;margin:55px 0 50px;padding:25px 8px 35px}
+.intro-photo,.intro-photo.one,.intro-photo.two{position:relative;inset:auto;width:100%;max-width:none;z-index:auto}
+.intro-photo.one{transform:rotate(-4deg)}
+.intro-photo.two{transform:rotate(4deg);margin-top:75px}
+.intro-photo img,.intro-photo.two img{aspect-ratio:.85}
+.intro-bird{top:-35px;right:3%}
+.intro-body>.small-copy{margin-top:0}
+@media(max-width:650px){
+ .intro-postcards{gap:18px;margin:35px 0 35px;padding:25px 4px 30px}
+ .intro-photo.one,.intro-photo.two{width:100%;inset:auto}
+ .intro-photo.two{margin-top:55px}
+ .intro-photo figcaption{font-size:clamp(12px,3.6vw,15px);line-height:1.2}
+ .intro-bird{top:-25px;right:2%}
+}
+@media(prefers-reduced-motion:no-preference){
+ .mountain-engraving,.mountain-note,.book-back{will-change:transform}
+ .postcard img{transition:filter .7s var(--ease)}
+ .postcard:hover img{filter:saturate(1) contrast(1)}
+ .read-link span{transition:transform .4s var(--ease)}
+ .read-link:hover span{transform:translateY(6px)}
+}

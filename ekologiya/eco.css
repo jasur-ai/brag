@@ -25,3 +25,19 @@
 }
 @keyframes eco-arrive{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes eco-fade{from{opacity:0}to{opacity:1}}
+/* A single complete initiative replaces the collection of unfinished pitches. */
+.initiative{background:#1b2d20;color:#f0eee1;padding:clamp(24px,4vw,60px)}
+.initiative-heading{display:flex;justify-content:space-between;align-items:center;padding-bottom:20px;border-bottom:1px solid #f0eee177;font-size:10px;letter-spacing:.12em}
+.initiative-heading span:last-child{font-size:27px}
+.initiative-layout{display:grid;grid-template-columns:1fr 1fr;gap:9vw;padding:70px 0 80px}
+.initiative-label,.initiative-overline,.initiative-steps span{font-size:10px;letter-spacing:.13em}
+.initiative h3{font-size:clamp(38px,5vw,76px);font-weight:400;line-height:1.04;letter-spacing:-.045em;margin:25px 0;max-width:650px}
+.initiative-subtitle{font:italic clamp(25px,3vw,42px)/1.1 Cormorant,Georgia,serif;color:#c6d5b9}
+.initiative-body h4{font-size:clamp(25px,2.6vw,40px);font-weight:400;line-height:1.15;letter-spacing:-.035em;margin:25px 0}
+.initiative-body>p:not(.initiative-overline){font-size:15px;line-height:1.8;max-width:560px;color:#e3e8dc}
+.initiative-body blockquote{font:italic clamp(25px,2.7vw,40px)/1.22 Cormorant,Georgia,serif;margin:45px 0 0;border-left:1px solid #c6d5b9;padding-left:24px;color:#d5e0c8}
+.initiative-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid #f0eee177;border-bottom:1px solid #f0eee177}
+.initiative-steps>div{padding:28px 26px 34px 0}.initiative-steps>div+div{border-left:1px solid #f0eee177;padding-left:26px}
+.initiative-steps h4{font-size:clamp(19px,1.8vw,27px);font-weight:400;letter-spacing:-.035em;margin:25px 0 12px}.initiative-steps p{font-size:13px;line-height:1.75;color:#e3e8dc;max-width:310px}
+.initiative-end{display:flex;justify-content:space-between;gap:20px;align-items:end;padding-top:30px;font:italic clamp(23px,2.5vw,36px)/1.2 Cormorant,Georgia,serif}.initiative-end span{font:30px Manrope,Arial,sans-serif}
+@media(max-width:650px){.initiative{padding:24px}.initiative-layout{grid-template-columns:1fr;gap:45px;padding:45px 0 50px}.initiative h3{font-size:clamp(38px,10vw,56px)}.initiative-body>p:not(.initiative-overline){font-size:14px}.initiative-steps{grid-template-columns:1fr}.initiative-steps>div{padding:24px 0}.initiative-steps>div+div{border-left:0;border-top:1px solid #f0eee177;padding-left:0}.initiative-steps h4{margin:14px 0 8px}}

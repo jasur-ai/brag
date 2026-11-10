@@ -36,13 +36,15 @@ test('engraving has the correct image content type', async () => {
 });
 
 
-test('ecology page has its own working entry and three nominations', async () => {
+test('ecology page has a complete, focused initiative', async () => {
   for (const route of ['/ekologiya', '/ekologiya/']) {
     const response = await fetch(base + route);
     assert.equal(response.status, 200, route);
     const html = await response.text();
     assert.match(html, /id="nominatsiyalar"/);
-    assert.equal((html.match(/class="nom-card reveal"/g) || []).length, 3);
+    assert.match(html, /Yilning eng yaxshi ekologiya himoyachisi/);
+    assert.match(html, /Toza makon/);
+    assert.equal((html.match(/class="initiative reveal"/g) || []).length, 1);
   }
   for (const asset of ['/ekologiya/eco.css', '/ekologiya/eco.js']) {
     assert.equal((await fetch(base + asset)).status, 200, asset);
