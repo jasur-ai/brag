@@ -10,7 +10,7 @@ Node.js 20+ is sufficient; no dependencies or install step are required.
 npm run dev
 ```
 
-Open http://localhost:3000. The home page, `/gallery/` and the research-backed ecology deposit-return case at `/ekologiya/` work directly. `npm test` checks JavaScript syntax.
+Open http://localhost:3000. The home page, `/gallery/` and the research-backed ecology deposit-return case and interactive illustrative bottle journey at `/ekologiya/` work directly. `npm test` checks JavaScript syntax.
 
 ## Deploy from this repository to Vercel
 
@@ -42,7 +42,7 @@ Native dialogs, Escape and arrow-key support, keyboard city tabs, reduced-motion
 
 ## Credits and limitations
 
-Visual inspiration: [The Message to Ukraine by Obys](https://themessagetoukraine.obys.agency/). This is an independent reinterpretation, not an Obys project. The reference site's source code, Ukrainian copy and original photography were not reused. Uzbek copy and SVG graphics and the AI-assisted mountain engraving and river illustration were created for this adaptation.
+Visual inspiration: [The Message to Ukraine by Obys](https://themessagetoukraine.obys.agency/). The ecology story also draws on motion and layout principles surveyed in [Eleken’s design examples](https://www.eleken.co/blog-posts/best-website-design-examples). This is an independent reinterpretation, not an Obys project. The reference site's source code, Ukrainian copy and original photography were not reused. Uzbek copy and SVG graphics and the AI-assisted mountain engraving, river illustration, and mahalla engraving were created for this adaptation.
 
 Photos: Pexels and Unsplash; individual source links are in `assets/credits.json` and the on-site credits dialog. Font families: Manrope and Cormorant Garamond (SIL Open Font License). Photograph usage remains subject to each source platform's license.
 

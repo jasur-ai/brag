@@ -45,11 +45,16 @@ test('ecology explains an evidence-backed deposit-return proposal', async () => 
     assert.match(html, /id="manbalar"/);
     assert.match(html, /Qaytariladigan garov/i);
     assert.match(html, /91,9/);
+    assert.match(html, /id="journey-next"/);
+    assert.match(html, /class="narrative-track"/);
+    assert.equal((html.match(/class="narrative-panel"/g) || []).length, 4);
+    assert.match(html, /HAQIQIY TO‘LOV EMAS/);
+    assert.match(html, /<noscript>/);
     assert.doesNotMatch(html, /<form|hisoblagich|kalkulyator/i);
     assert.doesNotMatch(html, /murojaat/i);
     assert.doesNotMatch(html, /Yilning eng yaxshi ekologiya/);
   }
-  for (const asset of ['/ekologiya/eco.css', '/ekologiya/eco.js', '/assets/eco-river-illustration.png']) {
+  for (const asset of ['/ekologiya/eco.css', '/ekologiya/eco.js', '/assets/eco-river-illustration.png', '/assets/eco-mahalla-engraving.png']) {
     assert.equal((await fetch(base + asset)).status, 200, asset);
   }
 });
