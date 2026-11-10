@@ -199,6 +199,25 @@ if ('IntersectionObserver' in window) {
 } else {
  $$('.reveal').forEach(el=>el.classList.add('in-view'));
 }
+// Reveal editorial imagery and crop-mask chapter headings as they enter the viewport.
+// WAAPI is progressive enhancement: without it all content remains visible.
+const editorialAnimations=new Set();
+if ('IntersectionObserver' in window && Element.prototype.animate) {
+ const cinematicObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+  if (!entry.isIntersecting) return;
+  cinematicObserver.unobserve(entry.target);
+  if (reducedMotion) return;
+  const isHeading=entry.target.classList.contains('chapter-title');
+  const animation=entry.target.animate(isHeading
+   ? [{clipPath:'inset(0 0 100% 0)'},{clipPath:'inset(0 0 0% 0)'}]
+   : [{clipPath:'inset(0 0 100% 0)'},{clipPath:'inset(0 0 0% 0)'}],
+   {duration:isHeading?1100:950,easing:'cubic-bezier(.22,1,.36,1)'});
+  editorialAnimations.add(animation);
+  animation.onfinish=()=>editorialAnimations.delete(animation);
+  animation.oncancel=()=>editorialAnimations.delete(animation);
+ }),{threshold:.12});
+ $$('.chapter-title, .intro-photo img, .landscape-card img, .food-story>figure img, .city-photo img, .outro-photo img, .preview-gallery .card-front img').forEach(el=>cinematicObserver.observe(el));
+}
 const chapters=$$('[data-chapter]');
 const poem=$('.poem-scene');
 const food=$('.food');
@@ -219,13 +238,17 @@ const poemDots=$$('.poem-dots b');
 const plate=$('.food-plate'), bread=$('.food-bread'), foodQuestion=$('.food-question');
 const mountainScene=$('.mountain-scene'), mountainArt=$('.mountain-engraving'), mountainNote=$('.mountain-note');
 const bookScene=$('.book-collage'), bookBack=$('.book-back');
+const hero=$('.hero'), heroColumns=$$('.year-column');
+const rings=$$('.food-ring'), foodStar=$('.food-star');
+const soul=$('.soul'), soulSky=$('.soul-sky'), soulStar=$('.soul-center .little-star');
+const outro=$('.outro-collage'), outroNote=$('.outro-note');
 let lastChapter='';
 function updateScroll(){
  ticking=false;
  const y=window.scrollY, h=window.innerHeight;
  const maxScroll=document.documentElement.scrollHeight-h;
  const footerTop=footer.getBoundingClientRect().top;
- let activeChapter='', poemIndex=null, foodProgress=null, mountainProgress=null, bookProgress=null, parallax=[];
+ let activeChapter='', poemIndex=null, foodProgress=null, mountainProgress=null, bookProgress=null, heroProgress=null, soulProgress=null, outroProgress=null, parallax=[];
  if(route==='home'){
   let active=chapters[0];
   for(const chapter of chapters){if(chapter.getBoundingClientRect().top<h*.45)active=chapter;}
@@ -236,6 +259,12 @@ function updateScroll(){
    poemIndex=Math.min(3,Math.floor(p*4));
   }
   if(!reducedMotion){
+   const hr=hero.getBoundingClientRect();
+   if(hr.bottom>0&&hr.top<h)heroProgress=clamp(-hr.top/Math.max(1,hr.height));
+   const sr=soul.getBoundingClientRect();
+   if(sr.bottom>0&&sr.top<h)soulProgress=clamp((h-sr.top)/(h+sr.height));
+   const or=outro.getBoundingClientRect();
+   if(or.bottom>0&&or.top<h)outroProgress=clamp((h-or.top)/(h+or.height));
    const fr=food.getBoundingClientRect();
    if(fr.bottom>0&&fr.top<h)foodProgress=clamp(-fr.top/Math.max(1,fr.height-h));
    const mr=mountainScene.getBoundingClientRect();
@@ -268,7 +297,12 @@ function updateScroll(){
   plate.style.transform=`translate(${(p-.5)*14}vw,${Math.sin(p*Math.PI)*-25}px) rotate(${-20+p*42}deg)`;
   bread.style.transform=`translate(${(p-.5)*-10}vw,${Math.cos(p*Math.PI)*20}px) rotate(${22-p*28}deg)`;
   foodQuestion.style.transform=`translateX(${(p-.5)*-8}vw)`;
+  rings.forEach((ring,i)=>{ring.style.transform=`rotate(${i?25-p*50:-15+p*40}deg) scaleY(.74)`;});
+  foodStar.style.rotate=`${(p-.5)*70}deg`;
  }
+ if(heroProgress!==null)heroColumns.forEach((column,i)=>{column.style.translate=`0 ${(-heroProgress*(12+i*8)).toFixed(1)}px`;});
+ if(soulProgress!==null){soulSky.style.transform=`scale(1.08) translateY(${((soulProgress-.5)*-4).toFixed(2)}%)`;soulStar.style.rotate=`${((soulProgress-.5)*90).toFixed(1)}deg`;}
+ if(outroProgress!==null)outroNote.style.translate=`0 ${((outroProgress-.5)*-25).toFixed(1)}px`;
  if(mountainProgress!==null){
   mountainArt.style.transform=`scale(1.04) translateY(${((mountainProgress-.5)*-3).toFixed(2)}%)`;
   mountainNote.style.translate=`0 ${((mountainProgress-.5)*-24).toFixed(1)}px`;
@@ -287,6 +321,10 @@ function onMotionPreferenceChange(event){
  reducedMotion=event.matches;
  if(reducedMotion){
   parallaxItems.forEach(item=>item.style.removeProperty('translate'));
+  editorialAnimations.forEach(animation=>animation.cancel());
+  heroColumns.forEach(column=>column.style.removeProperty('translate'));
+  rings.forEach(ring=>ring.style.removeProperty('transform'));foodStar.style.removeProperty('rotate');
+  soulSky.style.removeProperty('transform');soulStar.style.removeProperty('rotate');outroNote.style.removeProperty('translate');
   mountainArt.style.removeProperty('transform');mountainNote.style.removeProperty('translate');bookBack.style.removeProperty('translate');
   poemLines.forEach(line=>line.getAnimations?.().forEach(animation=>animation.cancel()));
   ['.food-plate','.food-bread','.food-question'].forEach(selector=>$(selector).style.removeProperty('transform'));

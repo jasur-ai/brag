@@ -10,7 +10,7 @@ Node.js 20+ is sufficient; no dependencies or install step are required.
 npm run dev
 ```
 
-Open http://localhost:3000. The home page, `/gallery/` and the ecology initiative page at `/ekologiya/` work directly. `npm test` checks JavaScript syntax.
+Open http://localhost:3000. The home page, `/gallery/` and the ecology initiative and locally saved action checklist at `/ekologiya/` work directly. `npm test` checks JavaScript syntax.
 
 ## Deploy from this repository to Vercel
 

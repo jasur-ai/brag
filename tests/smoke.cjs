@@ -44,6 +44,9 @@ test('ecology page has a complete, focused initiative', async () => {
     assert.match(html, /id="nominatsiyalar"/);
     assert.match(html, /Yilning eng yaxshi ekologiya himoyachisi/);
     assert.match(html, /Toza makon/);
+    assert.match(html, /id="harakat"/);
+    assert.equal((html.match(/type="checkbox"/g) || []).length, 4);
+    assert.match(html, /O‘tkir yoki xavfli buyumlarga tegmang/);
     assert.equal((html.match(/class="initiative reveal"/g) || []).length, 1);
   }
   for (const asset of ['/ekologiya/eco.css', '/ekologiya/eco.js']) {
