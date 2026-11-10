@@ -36,15 +36,16 @@ test('engraving has the correct image content type', async () => {
 });
 
 
-test('ecology offers practical guidance and an editable report', async () => {
+test('ecology has a refill solution and impact estimator', async () => {
   for (const route of ['/ekologiya', '/ekologiya/']) {
     const response = await fetch(base + route);
     assert.equal(response.status, 200, route);
     const html = await response.text();
     assert.match(html, /id="yechim"/);
-    assert.match(html, /id="eco-form"/);
-    assert.match(html, /id="report-text"/);
-    assert.equal((html.match(/name="issue"/g) || []).length, 4);
+    assert.match(html, /id="refill-form"/);
+    assert.match(html, /id="bottle-result"/);
+    assert.match(html, /id="money-result"/);
+    assert.doesNotMatch(html, /murojaat/i);
     assert.doesNotMatch(html, /Yilning eng yaxshi ekologiya/);
   }
   for (const asset of ['/ekologiya/eco.css', '/ekologiya/eco.js', '/assets/eco-river-illustration.png']) {

@@ -16,78 +16,31 @@ if ('IntersectionObserver' in window) {
   $$('.story-step').forEach(element => element.classList.add('active'));
 }
 
-// Suggestions are intentionally general: service availability depends on the locality.
-const guides = {
-  waste: {
-    tag: 'CHIQINDI / 01', title: 'Avval xavfsizlik.',
-    intro: 'Kichik va xavfsiz chiqindini qo‘lqop bilan yig‘ish mumkin. O‘tkir buyum yoki noma’lum moddaga tegmang.',
-    contact: 'Mahalla, hududga mas’ul obodonlashtirish yoki chiqindi xizmatiga xabar bering.',
-    detail: 'Aniq manzil, chiqindi qayerda to‘plangani va xavfli buyum ko‘rinayotganini ko‘rsating.',
-    report: 'chiqindi to‘planganini ko‘rdim', request: 'Holatni ko‘rib chiqib, chiqindini xavfsiz olib chiqish choralarini ko‘rishingizni so‘rayman.'
-  },
-  water: {
-    tag: 'SUV / 02', title: 'Sizishni to‘xtatish.',
-    intro: 'Agar o‘z uyingizdagi jo‘mrak bo‘lsa va xavfsiz bo‘lsa, uni yoping. Ko‘cha quvuri yoki elektr jihozlariga o‘zingiz tegmang.',
-    contact: 'Uydagi nosozlik uchun uy egasi yoki usta, ko‘chadagi quvur uchun mahalliy suv ta’minoti xizmatiga xabar bering.',
-    detail: 'Suv qayerdan oqayotgani, manzil va xavfsiz masofadan ko‘ringan belgilarni yozing.',
-    report: 'suv sizib oqayotganini ko‘rdim', request: 'Sizish sababini tekshirib, bartaraf etish choralarini ko‘rishingizni so‘rayman.'
-  },
-  smoke: {
-    tag: 'TUTUN / 03', title: 'Tutundan uzoqlashing.',
-    intro: 'Tutunni nafasga olmang va olovga yaqinlashmang. Yong‘in xavfi yoki inson hayotiga tahdid bo‘lsa, xavfsiz joyga chiqib, mahalliy tezkor xizmatga darhol murojaat qiling.',
-    contact: 'Xavf darajasiga qarab mahalliy tezkor xizmat yoki hududga mas’ul tashkilotga xabar bering.',
-    detail: 'Manzil, tutun yoki olov ko‘rinishi va vaziyatni xavfsiz masofadan ta’riflang.',
-    report: 'chiqindi yoqilayotganini yoki tutun chiqayotganini ko‘rdim', request: 'Holatni tekshirib, xavfsizlikni ta’minlash choralarini ko‘rishingizni so‘rayman.'
-  },
-  tree: {
-    tag: 'DARAXT / 04', title: 'O‘zingizni xavfga qo‘ymang.',
-    intro: 'Qulay masofadan holatni kuzating. Kesish ishlari yoki qulab tushishi mumkin bo‘lgan shoxlar yaqiniga bormang; mojaroga aralashmang.',
-    contact: 'Hududga mas’ul mahalla yoki mahalliy obodonlashtirish va ekologiya tashkilotiga xabar bering.',
-    detail: 'Manzil, daraxtning joylashuvi va ko‘rgan holatingizni tasvirlang. Ruxsat bor-yo‘qligini taxmin qilmang.',
-    report: 'daraxtga zarar yetayotgan bo‘lishi mumkin bo‘lgan holatni ko‘rdim', request: 'Holatni tekshirib, zarur choralar ko‘rishingizni so‘rayman.'
+// Estimates use the visitor's inputs, not a measured environmental outcome.
+const refillForm = $('#refill-form');
+const inputIds = ['bottles', 'price', 'refill-cost', 'bottle-cost'];
+const inputs = inputIds.map(id => document.getElementById(id));
+const formatNumber = number => String(number).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const bottleResult = $('#bottle-result'), moneyResult = $('#money-result');
+const moneyLabel = $('#money-label'), calcError = $('.calc-error');
+function calculate() {
+  const valid = inputs.every(input => input.value !== '' && input.validity.valid && Number.isFinite(input.valueAsNumber));
+  if (!valid) {
+    bottleResult.textContent = '—'; moneyResult.textContent = '—';
+    moneyLabel.textContent = 'BIRINCHI YILDAGI TAXMINIY FARQ';
+    calcError.textContent = 'Barcha maydonlarga ruxsat etilgan oraliqda butun son kiriting.';
+    return;
   }
-};
-const form = $('#eco-form'), result = $('#result'), reportText = $('#report-text'), status = $('.result-status');
-function chosenGuide() { return guides[form.elements.issue.value] || guides.waste; }
-function updateGuide() {
-  const guide = chosenGuide();
-  $('#guide-tag').textContent = guide.tag;
-  $('#guide-title').textContent = guide.title;
-  $('#guide-intro').textContent = guide.intro;
-  $('#guide-contact').textContent = guide.contact;
-  $('#guide-detail').textContent = guide.detail;
-  result.hidden = true;
+  const [bottles, price, refill, container] = inputs.map(input => input.valueAsNumber);
+  const difference = (bottles * price - refill) * 52 - container;
+  bottleResult.textContent = formatNumber(bottles * 52);
+  moneyResult.textContent = formatNumber(Math.abs(difference));
+  moneyLabel.textContent = difference < 0 ? 'BIRINCHI YILDAGI QO‘SHIMCHA XARAJAT' : difference === 0 ? 'BIRINCHI YILDA XARAJAT FARQI YO‘Q' : 'BIRINCHI YILDAGI TAXMINIY TEJAM';
+  calcError.textContent = '';
 }
-form.elements.issue.forEach(radio => radio.addEventListener('change', updateGuide));
-['place', 'details'].forEach(id => $('#' + id).addEventListener('input', () => { result.hidden = true; }));
-form.addEventListener('submit', event => {
-  event.preventDefault();
-  const place = $('#place').value.trim();
-  if (!place) { $('#place').setCustomValidity('Manzil yoki mo‘ljalni kiriting.'); $('#place').reportValidity(); return; }
-  const details = $('#details').value.trim();
-  const guide = chosenGuide();
-  reportText.value = `Assalomu alaykum.\n\n${place} manzilida ${guide.report}.${details ? `\n\nQo‘shimcha ma’lumot: ${details}` : ''}\n\n${guide.request}\n\nRahmat.`;
-  status.textContent = '';
-  result.hidden = false;
-  result.scrollIntoView({ behavior: preference.matches ? 'auto' : 'smooth', block: 'start' });
-});
-$('#place').addEventListener('input', event => event.target.setCustomValidity(''));
-$('#copy-report').addEventListener('click', async () => {
-  try {
-    if (!navigator.clipboard || !window.isSecureContext) throw new Error('Clipboard unavailable');
-    await navigator.clipboard.writeText(reportText.value);
-    status.textContent = 'Matn nusxalandi. Uni tegishli xizmatga o‘zingiz yuboring.';
-  } catch {
-    reportText.focus(); reportText.select();
-    status.textContent = 'Matn belgilandi. Uni qo‘lda nusxalang.';
-  }
-});
-$('#download-report').addEventListener('click', () => {
-  const url = URL.createObjectURL(new Blob([reportText.value], { type: 'text/plain;charset=utf-8' }));
-  const link = document.createElement('a'); link.href = url; link.download = 'ekologik-murojaat.txt'; link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  status.textContent = 'Matn fayl sifatida saqlandi. Uni tegishli xizmatga o‘zingiz yuboring.';
-});
+refillForm.addEventListener('submit', event => event.preventDefault());
+inputs.forEach(input => input.addEventListener('input', calculate));
+calculate();
 
 // One rAF per scroll: decorative transforms do not affect document flow.
 const art = $('.story-art-frame'), storyLayout = $('.story-layout'), artImage = art.querySelector('img'), artLabel = $('.story-art-label');
