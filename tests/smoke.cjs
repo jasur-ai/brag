@@ -34,3 +34,17 @@ test('engraving has the correct image content type', async () => {
   assert.equal(response.status, 200);
   assert.match(response.headers.get('content-type'), /^image\/png/);
 });
+
+
+test('ecology page has its own working entry and three nominations', async () => {
+  for (const route of ['/ekologiya', '/ekologiya/']) {
+    const response = await fetch(base + route);
+    assert.equal(response.status, 200, route);
+    const html = await response.text();
+    assert.match(html, /id="nominatsiyalar"/);
+    assert.equal((html.match(/class="nom-card reveal"/g) || []).length, 3);
+  }
+  for (const asset of ['/ekologiya/eco.css', '/ekologiya/eco.js']) {
+    assert.equal((await fetch(base + asset)).status, 200, asset);
+  }
+});

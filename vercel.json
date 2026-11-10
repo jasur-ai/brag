@@ -7,6 +7,14 @@
     {
       "source": "/gallery/",
       "destination": "/index.html"
+    },
+    {
+      "source": "/ekologiya",
+      "destination": "/ekologiya/index.html"
+    },
+    {
+      "source": "/ekologiya/",
+      "destination": "/ekologiya/index.html"
     }
   ],
   "headers": [

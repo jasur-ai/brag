@@ -1,7 +1,8 @@
 'use strict';
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+let reducedMotion = motionPreference.matches;
 const photoData = [
  {key:'registan',title:'Registon, Samarqand',category:'architecture',ratio:'.91',message:'Moviy gumbazlar ostida asrlar bir-biri bilan suhbatlashadi.',source:'Unsplash',url:'https://unsplash.com/s/photos/uzbekistan'},
  {key:'mountains',title:'Chorvoq, Toshkent viloyati',category:'nature',ratio:'.77',message:'Tog‘larning sukunati. Suvning moviyligi. Bir nafas xotirjamlik.',source:'Pexels',id:26729708},
@@ -192,8 +193,12 @@ $('.share-button').addEventListener('click',async()=>{
 });
 
 // Intersection-based reveals and chapter labels. No animation library or network dependency.
-const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('in-view');revealObserver.unobserve(entry.target);}}),{threshold:.1,rootMargin:'0px 0px -25px 0px'});
-$$('.reveal').forEach(el=>revealObserver.observe(el));
+if ('IntersectionObserver' in window) {
+ const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('in-view');revealObserver.unobserve(entry.target);}}),{threshold:.1,rootMargin:'0px 0px -25px 0px'});
+ $$('.reveal').forEach(el=>revealObserver.observe(el));
+} else {
+ $$('.reveal').forEach(el=>el.classList.add('in-view'));
+}
 const chapters=$$('[data-chapter]');
 const poem=$('.poem-scene');
 const food=$('.food');
@@ -205,44 +210,68 @@ const poemVerses=[
  ['Sen bor joyda ko‘nglim doim yorug‘dir.','Mehring bilan dunyo menga yaqindir.','O‘zbekiston — yuragimdagi yurtim.']
 ];
 function clamp(v,min=0,max=1){return Math.min(max,Math.max(min,v));}
+// Read layout first, then apply changes together to avoid repeated layout work while scrolling.
+const progressBar=$('.reading-progress');
+const chapterLabel=$('.chapter-indicator span');
+const footer=$('.footer');
+const poemLines=[$('.poem-before'),$('.poem-current'),$('.poem-after')];
+const poemDots=$$('.poem-dots b');
+const plate=$('.food-plate'), bread=$('.food-bread'), foodQuestion=$('.food-question');
+let lastChapter='';
 function updateScroll(){
  ticking=false;
- const y=window.scrollY;const h=window.innerHeight;
+ const y=window.scrollY, h=window.innerHeight;
  const maxScroll=document.documentElement.scrollHeight-h;
- $('.reading-progress').style.transform=`scaleX(${maxScroll>0?y/maxScroll:0})`;
- const footerTop=$('.footer').getBoundingClientRect().top;
- document.body.classList.toggle('at-footer',footerTop<h*.7);
- if(route!=='home')return;
- let active=chapters[0];
- for(const chapter of chapters){if(chapter.getBoundingClientRect().top<h*.45)active=chapter;}
- if(active)$('.chapter-indicator span').textContent=active.dataset.chapter;
- const pr=poem.getBoundingClientRect();
- if(pr.bottom>0&&pr.top<h){
-  const p=clamp(-pr.top/(pr.height-h));
-  const index=Math.min(3,Math.floor(p*4));
-  if(index!==lastPoemIndex){
-   lastPoemIndex=index;const lines=poemVerses[index];
-   $('.poem-before').textContent=lines[0];$('.poem-current').textContent=lines[1];$('.poem-after').textContent=lines[2];
-   $$('.poem-dots b').forEach((dot,i)=>dot.classList.toggle('active',i===index));
+ const footerTop=footer.getBoundingClientRect().top;
+ let activeChapter='', poemIndex=null, foodProgress=null, parallax=[];
+ if(route==='home'){
+  let active=chapters[0];
+  for(const chapter of chapters){if(chapter.getBoundingClientRect().top<h*.45)active=chapter;}
+  activeChapter=active ? active.dataset.chapter : '';
+  const pr=poem.getBoundingClientRect();
+  if(pr.bottom>0&&pr.top<h){
+   const p=clamp(-pr.top/Math.max(1,pr.height-h));
+   poemIndex=Math.min(3,Math.floor(p*4));
+  }
+  if(!reducedMotion){
+   const fr=food.getBoundingClientRect();
+   if(fr.bottom>0&&fr.top<h)foodProgress=clamp(-fr.top/Math.max(1,fr.height-h));
+   parallax=parallaxItems.map(item=>({item,rect:item.parentElement.getBoundingClientRect()}))
+    .filter(({rect})=>rect.bottom>=0&&rect.top<=h)
+    .map(({item,rect})=>({item,amount:(rect.top-h*.35)*Number(item.dataset.parallax)}));
   }
  }
- if(reducedMotion)return;
- const fr=food.getBoundingClientRect();
- if(fr.bottom>0&&fr.top<h){
-  const p=clamp(-fr.top/(fr.height-h));
-  $('.food-plate').style.transform=`translate(${(p-.5)*14}vw,${Math.sin(p*Math.PI)*-25}px) rotate(${-20+p*42}deg)`;
-  $('.food-bread').style.transform=`translate(${(p-.5)*-10}vw,${Math.cos(p*Math.PI)*20}px) rotate(${22-p*28}deg)`;
-  $('.food-question').style.transform=`translateX(${(p-.5)*-8}vw)`;
+ progressBar.style.transform=`scaleX(${maxScroll>0?clamp(y/maxScroll):0})`;
+ document.body.classList.toggle('at-footer',footerTop<h*.7);
+ if(route!=='home')return;
+ if(activeChapter!==lastChapter){chapterLabel.textContent=activeChapter;lastChapter=activeChapter;}
+ if(poemIndex!==null&&poemIndex!==lastPoemIndex){
+  lastPoemIndex=poemIndex;
+  poemLines.forEach((line,i)=>{line.textContent=poemVerses[poemIndex][i];});
+  poemDots.forEach((dot,i)=>dot.classList.toggle('active',i===poemIndex));
  }
- for(const item of parallaxItems){
-  const rect=item.parentElement.getBoundingClientRect();
-  if(rect.bottom<0||rect.top>h)continue;
-  const amount=(rect.top-h*.35)*Number(item.dataset.parallax);
-  item.style.translate=`0 ${amount.toFixed(1)}px`;
+ if(foodProgress!==null){
+  const p=foodProgress;
+  plate.style.transform=`translate(${(p-.5)*14}vw,${Math.sin(p*Math.PI)*-25}px) rotate(${-20+p*42}deg)`;
+  bread.style.transform=`translate(${(p-.5)*-10}vw,${Math.cos(p*Math.PI)*20}px) rotate(${22-p*28}deg)`;
+  foodQuestion.style.transform=`translateX(${(p-.5)*-8}vw)`;
  }
+ parallax.forEach(({item,amount})=>{item.style.translate=`0 ${amount.toFixed(1)}px`;});
 }
 function requestTick(){if(!ticking){requestAnimationFrame(updateScroll);ticking=true;}}
 window.addEventListener('scroll',requestTick,{passive:true});window.addEventListener('resize',requestTick,{passive:true});
 window.addEventListener('load',requestTick);requestTick();
 // Recover gracefully if a photograph fails: keep the caption and paper composition visible.
 $$('img').forEach(image=>image.addEventListener('error',()=>{image.style.opacity='.2';image.style.background='#baa17c';}));
+
+// Honour changes to the system motion setting without requiring a reload.
+function onMotionPreferenceChange(event){
+ reducedMotion=event.matches;
+ if(reducedMotion){
+  parallaxItems.forEach(item=>item.style.removeProperty('translate'));
+  ['.food-plate','.food-bread','.food-question'].forEach(selector=>$(selector).style.removeProperty('transform'));
+ }
+ requestTick();
+}
+if (motionPreference.addEventListener) motionPreference.addEventListener('change',onMotionPreferenceChange);
+else if (motionPreference.addListener) motionPreference.addListener(onMotionPreferenceChange);
