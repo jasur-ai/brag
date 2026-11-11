@@ -149,7 +149,9 @@ test('ecology visualises the fork and the return rate', async () => {
   const css = await (await fetch(base + '/ekologiya/eco.css')).text();
   assert.match(css, /clamp\(260px,28vw,680px\)/);
   const homeJs = await (await fetch(base + '/app.js')).text();
-  assert.match(homeJs, /fly-run/);
+  assert.match(homeJs, /moveFlocks/);
+  assert.match(homeJs, /requestFlockTick/);
   const ecoJs = await (await fetch(base + '/ekologiya/eco.js')).text();
-  assert.match(ecoJs, /fly-run/);
+  assert.match(ecoJs, /moveFlock/);
+  assert.match(ecoJs, /scrubFork/);
 });

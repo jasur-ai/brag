@@ -123,13 +123,60 @@ if ('IntersectionObserver' in window && Element.prototype.animate) {
   else if (preference.addListener) preference.addListener(cancelClosingMotion);
 }
 
-// Arrival moments: a flock crosses the sky once as the reader reaches each scene.
-if ('IntersectionObserver' in window) {
-  const runFlock = scene => { scene.classList.remove('fly-run'); void scene.offsetWidth; scene.classList.add('fly-run'); };
-  const skyObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-    const scene = entry.target;
-    if (entry.isIntersecting) { clearTimeout(scene._flockTimer); scene._flockTimer = setTimeout(() => runFlock(scene), 250); }
-    else { clearTimeout(scene._flockTimer); scene.classList.remove('fly-run'); }
-  }), { threshold: 0.3 });
-  $$('.hero-image, .story-art-frame').forEach(scene => skyObserver.observe(scene));
+// Scroll-scrubbed flight (the message-to-ukraine method): the swipe carries the swallow,
+// and the destiny lines are drawn by the reader's own scroll.
+const clamp01 = value => Math.min(1, Math.max(0, value));
+
+const heroImage = document.querySelector('.hero-image');
+const heroBirds = heroImage ? Array.from(heroImage.querySelectorAll('.fly-bird')) : [];
+const forkScene = document.querySelector('.fork-scene');
+const forkPaths = forkScene ? Array.from(forkScene.querySelectorAll('.fork-path')) : [];
+const forkComets = forkScene ? Array.from(forkScene.querySelectorAll('.fork-comet')) : [];
+const forkEnds = forkScene ? Array.from(forkScene.querySelectorAll('.fork-end')) : [];
+
+function moveFlock(){
+  if (preference.matches || !heroImage || heroBirds.length === 0) return;
+  const h = innerHeight;
+  const r = heroImage.getBoundingClientRect();
+  if (r.bottom < -80 || r.top > h + 80) return;
+  const p = clamp01((h - r.top) / (h + r.height));
+  heroBirds.forEach((bird, i) => {
+    const q = clamp01(p * 1.16 - 0.08 + (i - 1) * 0.07);
+    bird.style.transform = 'translateX(' + (-16 + q * 132) + 'vw) translateY(' +
+      (Math.sin((q * 2 + i * 0.7) * Math.PI) * 2.2) + 'vh) rotate(' +
+      (Math.sin(q * 7 + i) * 5 - 3) + 'deg)';
+  });
 }
+
+function scrubFork(){
+  if (!forkScene || preference.matches) return;
+  const h = innerHeight;
+  const r = forkScene.getBoundingClientRect();
+  if (r.bottom < 0 || r.top > h) return;
+  const p = clamp01((h * 0.8 - r.top) / (r.height * 0.72));
+  forkPaths.forEach(path => { path.style.strokeDashoffset = String(1150 * (1 - p)); });
+  forkComets.forEach(comet => {
+    comet.style.strokeDashoffset = String(1166 - p * 1150);
+    comet.style.opacity = p > 0.94 ? '0' : '1';
+  });
+  const endOn = p > 0.82 ? 1 : 0;
+  forkEnds.forEach((glyph, i) => {
+    glyph.style.opacity = String(endOn);
+    glyph.style.transform = endOn ? 'none' : 'translateY(8px)';
+    glyph.style.transition = 'opacity .5s ease ' + (i * 0.12) + 's, transform .5s ease ' + (i * 0.12) + 's';
+  });
+}
+
+let flockTick = false;
+function requestFlockTick(){
+  if (flockTick) return;
+  flockTick = true;
+  requestAnimationFrame(() => { flockTick = false; moveFlock(); scrubFork(); });
+}
+addEventListener('scroll', requestFlockTick, { passive: true });
+addEventListener('resize', requestFlockTick);
+requestFlockTick();
+if (preference.addEventListener) preference.addEventListener('change', () => {
+  heroBirds.forEach(bird => bird.style.removeProperty('transform'));
+  requestFlockTick();
+});

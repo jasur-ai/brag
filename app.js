@@ -341,21 +341,37 @@ function onMotionPreferenceChange(event){
 if (motionPreference.addEventListener) motionPreference.addEventListener('change',onMotionPreferenceChange);
 else if (motionPreference.addListener) motionPreference.addListener(onMotionPreferenceChange);
 
-// Sky scenes: one cinematic flock flyover each time the reader arrives ("lands").
-// The scene rests afterwards; returning re-plays the moment.
-if ('IntersectionObserver' in window) {
-  const runFlock = scene => { scene.classList.remove('fly-run'); void scene.offsetWidth; scene.classList.add('fly-run'); };
-  const skyObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-    const scene = entry.target;
-    if (entry.isIntersecting) {
-      const root = document.documentElement;
-      const wait = scene.classList.contains('hero') && root.classList.contains('entry-motion') && !root.classList.contains('entry-skipped') ? 3400 : 0;
-      clearTimeout(scene._flockTimer);
-      scene._flockTimer = setTimeout(() => runFlock(scene), wait);
-    } else {
-      clearTimeout(scene._flockTimer);
-      scene.classList.remove('fly-run');
-    }
-  }), { threshold: 0.25 });
-  $$('.hero, .poem-scene, .mountain-scene').forEach(scene => skyObserver.observe(scene));
+// Scroll-scrubbed flocks (the message-to-ukraine method): the swipe carries the birds.
+// Wings flap because the birds are alive; their flight is the reader's scroll.
+const flockScenes = Array.from(document.querySelectorAll('.hero, .poem-scene, .mountain-scene')).map(scene => ({
+  scene,
+  birds: Array.from(scene.querySelectorAll('.fly-bird'))
+}));
+function moveFlocks(){
+  if (reducedMotion) return;
+  const h = window.innerHeight;
+  for (const entry of flockScenes) {
+    const r = entry.scene.getBoundingClientRect();
+    if (r.bottom < -80 || r.top > h + 80) continue;
+    const p = clamp((h - r.top) / (h + r.height));
+    entry.birds.forEach((bird, i) => {
+      const q = clamp(p * 1.16 - 0.08 + (i - 1) * 0.07);
+      bird.style.transform = 'translateX(' + (-16 + q * 132) + 'vw) translateY(' +
+        (Math.sin((q * 2 + i * 0.7) * Math.PI) * 2.2) + 'vh) rotate(' +
+        (Math.sin(q * 7 + i) * 5 - 3) + 'deg)';
+    });
+  }
 }
+let flockTick = false;
+function requestFlockTick(){
+  if (flockTick) return;
+  flockTick = true;
+  requestAnimationFrame(() => { flockTick = false; moveFlocks(); });
+}
+window.addEventListener('scroll', requestFlockTick, { passive: true });
+window.addEventListener('resize', requestFlockTick);
+requestFlockTick();
+if (motionPreference.addEventListener) motionPreference.addEventListener('change', () => {
+  flockScenes.forEach(entry => entry.birds.forEach(bird => bird.style.removeProperty('transform')));
+  requestFlockTick();
+});
