@@ -138,3 +138,18 @@ test('ecology closing image stays a small postcard', async () => {
   assert.match(eco, /kimning yölida qoladi\?/);
   assert.equal((eco.match(/class="story-step reveal"/g) || []).length, 3);
 });
+
+test('ecology visualises the fork and the return rate', async () => {
+  const eco = await (await fetch(base + '/ekologiya/')).text();
+  assert.match(eco, /class="fork-scene reveal"/);
+  assert.match(eco, /IKKITA TAQDIR/);
+  assert.match(eco, /YO‘L — CHAPGA/);
+  assert.equal((eco.match(/href="#bottle-mini"/g) || []).length, 100);
+  assert.match(eco, /100 ta idişdan 92 tasi qaytdi/);
+  const css = await (await fetch(base + '/ekologiya/eco.css')).text();
+  assert.match(css, /clamp\(260px,28vw,680px\)/);
+  const homeJs = await (await fetch(base + '/app.js')).text();
+  assert.match(homeJs, /fly-run/);
+  const ecoJs = await (await fetch(base + '/ekologiya/eco.js')).text();
+  assert.match(ecoJs, /fly-run/);
+});

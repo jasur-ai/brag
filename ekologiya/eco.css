@@ -112,21 +112,21 @@
 
 /* Living motion layer: flocks, zooms, floats */
 .flock{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:3}
-.fly-bird{position:absolute;width:30px;height:22px;will-change:transform,scale}
+.fly-bird{position:absolute;width:30px;height:22px;opacity:0;will-change:transform,scale}
 .hero-image{overflow:hidden}
 .hero-image .fly-bird{color:#14201a;opacity:.85}
 .fly-bird.fb-one{top:16%}
 .fly-bird.fb-two{top:24%;width:21px;height:16px}
-.fly-bird.fb-three{top:10%;width:15px;height:12px;opacity:.8}
+.fly-bird.fb-three{top:10%;width:15px;height:12px}
 @media(prefers-reduced-motion:no-preference){
-.fly-bird.fb-one{animation:eco-fly 17s linear infinite,eco-flap .85s ease-in-out infinite alternate}
-.fly-bird.fb-two{animation:eco-fly 23s linear -7s infinite,eco-flap 1.05s ease-in-out infinite alternate}
-.fly-bird.fb-three{animation:eco-fly 29s linear -15s infinite,eco-flap .7s ease-in-out infinite alternate}
-.hero-image>img{animation:eco-zoom 16s ease-in-out infinite alternate}
+.fly-run .fly-bird.fb-one{animation:eco-fly 12s linear both,eco-flap .8s ease-in-out infinite alternate}
+.fly-run .fly-bird.fb-two{animation:eco-fly 13.5s linear 1.3s both,eco-flap 1.02s ease-in-out infinite alternate}
+.fly-run .fly-bird.fb-three{animation:eco-fly 15s linear 2.7s both,eco-flap .68s ease-in-out infinite alternate}
+.hero-image.fly-run>img{animation:eco-drift 15s ease-out both}
+.story-art-frame.fly-run img{animation:eco-drift 17s ease-out both}
 .image-label{animation:eco-fade-up 1.1s var(--ease) .35s both}
 .image-coord{animation:eco-fade-up 1.1s var(--ease) .6s both}
 .story-art-frame{overflow:hidden}
-.story-art-frame img{animation:eco-zoom 18s ease-in-out infinite alternate}
 .map-bottle{animation:bottle-bob 3.2s ease-in-out infinite alternate}
 .evidence-lead.reveal h3{will-change:transform}
 .sources li{transition:background .3s var(--ease)}
@@ -143,18 +143,101 @@
 .eco-closing .closing-card{animation:card-float 7s ease-in-out infinite alternate}
 }
 @keyframes eco-fly{
- from{transform:translateX(-14vw) translateY(0)}
- 20%{transform:translateX(18vw) translateY(-2.5vh)}
- 45%{transform:translateX(48vw) translateY(1.5vh)}
- 70%{transform:translateX(78vw) translateY(-2vh)}
- to{transform:translateX(114vw) translateY(0)}}
+ from{opacity:0;transform:translateX(-16vw) translateY(0)}
+ 6%{opacity:1}
+ 20%{transform:translateX(16vw) translateY(-2.5vh)}
+ 45%{transform:translateX(46vw) translateY(1.5vh)}
+ 70%{transform:translateX(76vw) translateY(-2vh)}
+ 90%{opacity:1}
+ to{opacity:0;transform:translateX(116vw) translateY(0)}}
+@keyframes eco-drift{from{transform:scale(1.01) translateY(0)}to{transform:scale(1.07) translateY(-1.4%)}}
 @keyframes eco-flap{from{scale:1 1}to{scale:1 .5}}
 @keyframes eco-zoom{from{scale:1}to{scale:1.07}}
 @keyframes eco-fade-up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @keyframes bottle-bob{from{translate:0 0}to{translate:0 -6px}}
 @keyframes card-float{from{translate:0 0}to{translate:0 -9px}}
 @media(prefers-reduced-motion:reduce){
-.fly-bird{animation:none}
+.flock{display:none}
 .hero-image>img,.story-art-frame img,.map-bottle,.eco-closing .closing-card{animation:none}
+.hero-image.fly-run>img,.story-art-frame.fly-run img{animation:none}
 .image-label,.image-coord{animation:none;opacity:1}
+}
+
+/* Two destinies fork — the message seen, not read */
+.fork-scene{background:var(--ink);color:var(--cream);padding:5vw 3vw 4.5vw;margin:7vw 0 0}
+.fork-top{display:flex;justify-content:space-between;gap:15px;font-size:9px;letter-spacing:.08em;color:#e9ddc699}
+.fork-scene .eyebrow{margin-top:30px;color:#e9ddc6aa}
+.fork-scene h2{font-size:clamp(38px,5vw,74px);font-weight:400;letter-spacing:-.05em;line-height:.98;margin:14px 0 26px}
+.fork-scene h2 em{font-size:1.12em}
+.fork-svg{display:block;width:100%;height:auto;max-height:58svh}
+.fork-path{fill:none;stroke:#e9ddc64d;stroke-width:2.5;stroke-linecap:round}
+.js .fork-path{stroke-dasharray:1150;stroke-dashoffset:1150}
+.fork-comet{fill:none;stroke:#e9ddc6;stroke-width:3.4;stroke-linecap:round}
+.js .fork-comet{stroke-dasharray:16 1150;stroke-dashoffset:1166}
+.js .reveal.in-view .fork-path{transition:stroke-dashoffset 1.8s var(--ease) .2s;stroke-dashoffset:0}
+.js .reveal.in-view .fork-path-right{transition-delay:.55s}
+.js .reveal.in-view .fork-comet{animation:comet-run 2.5s var(--ease) .35s forwards}
+.js .reveal.in-view .fork-comet-right{animation-delay:.95s}
+@keyframes comet-run{to{stroke-dashoffset:0}}
+.fork-origin path,.fork-origin rect{fill:var(--cream)}
+.fork-svg-label{fill:var(--ink);font-size:15px;font-family:Manrope,Arial,sans-serif;letter-spacing:.08em}
+.fork-end path{fill:none;stroke:var(--cream);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.js .fork-end{opacity:0;transform:translateY(16px);transition:opacity .9s var(--ease) 1.35s,transform .9s var(--ease) 1.35s}
+.fork-end-right{transition-delay:1.75s}
+.js .reveal.in-view .fork-end{opacity:1;transform:none}
+.fork-legend{display:grid;grid-template-columns:1fr auto 1fr;gap:3vw;align-items:start;margin-top:24px;border-top:1px solid #e9ddc633;padding-top:26px}
+.fork-legend span{font-size:9px;letter-spacing:.11em;color:#e9ddc688}
+.fork-legend h3{font-size:clamp(28px,3.2vw,46px);font-weight:400;letter-spacing:-.045em;margin:10px 0 12px}
+.fork-legend p{font-size:13px;line-height:1.75;color:#e9ddc6bb;max-width:330px}
+.fork-legend-mid{align-self:center;padding:0 1vw}
+.fork-star{font-size:26px;color:var(--cream);display:inline-block;animation:fork-star-spin 9s linear infinite}
+@keyframes fork-star-spin{to{rotate:360deg}}
+
+/* 100 bottles — the return rate seen at a glance */
+.return-matrix{display:grid;grid-template-columns:minmax(280px,540px) 1fr;gap:5vw;align-items:center;padding:5.5vw 0;border-top:1px solid var(--ink)}
+.matrix-svg{width:100%;height:auto}
+.matrix-svg use{fill:var(--ink)}
+.matrix-svg use.m-off{opacity:.12}
+.js .matrix-svg use.m-on{opacity:.12;transition:opacity .55s var(--ease)}
+.js .return-matrix.in-view .matrix-svg use.m-on{opacity:1}
+.mrow.mr0 use{transition-delay:.05s}.mrow.mr1 use{transition-delay:.14s}.mrow.mr2 use{transition-delay:.23s}
+.mrow.mr3 use{transition-delay:.32s}.mrow.mr4 use{transition-delay:.41s}.mrow.mr5 use{transition-delay:.5s}
+.mrow.mr6 use{transition-delay:.59s}.mrow.mr7 use{transition-delay:.68s}.mrow.mr8 use{transition-delay:.77s}
+.mrow.mr9 use{transition-delay:.86s}
+.matrix-copy h4{font-size:clamp(27px,3.2vw,46px);font-weight:400;letter-spacing:-.045em;margin:12px 0 14px}
+.matrix-copy>p:not(.eyebrow){font-size:14px;line-height:1.8;max-width:520px}
+
+/* Roles flow: bottles travel the line */
+.system-flow .station:not(:last-child)::after{content:"";position:absolute;left:23px;top:56px;width:7px;height:7px;border-radius:50%;background:var(--ink);opacity:0}
+.js .system-flow .station:not(:last-child)::after{animation:station-flow 3.4s linear infinite}
+@keyframes station-flow{0%{opacity:0;top:56px}12%{opacity:.85}88%{opacity:.85}100%{opacity:0;top:calc(100% - 10px)}}
+
+/* Closing: proportional to the screen */
+.eco-closing>div{max-width:1500px;display:grid;grid-template-columns:1.3fr .7fr;column-gap:5vw;align-content:center;align-items:center}
+.eco-closing .eyebrow{grid-column:1;grid-row:1}
+.eco-closing h2{grid-column:1;grid-row:2}
+.eco-closing>div>p:not(.eyebrow){grid-column:1;grid-row:3}
+.eco-closing .closing-card{grid-column:2;grid-row:1/4;width:clamp(260px,28vw,680px);margin:0 auto}
+.eco-closing h2{font-size:clamp(48px,6vw,118px)}
+.eco-closing .closing-card img{height:auto;aspect-ratio:1.5;min-height:0}
+.eco-closing .closing-card figcaption{font-size:clamp(12px,1.1vw,16px)}
+@media(max-width:1023px){
+.eco-closing>div{display:block;padding:70px 5vw}
+.eco-closing .closing-card{width:clamp(250px,70vw,420px);margin:48px 0 0 auto}
+}
+@media(max-width:650px){
+.fork-scene{padding:55px 5vw}
+.fork-scene h2{font-size:clamp(34px,10vw,52px)}
+.fork-svg{max-height:none}
+.fork-legend{grid-template-columns:1fr;gap:22px}
+.fork-legend-mid{display:none}
+.return-matrix{grid-template-columns:1fr;gap:30px;padding:45px 0}
+}
+@media(prefers-reduced-motion:reduce){
+.fork-star{animation:none}
+.system-flow .station:not(:last-child)::after{animation:none;opacity:0}
+.js .matrix-svg use.m-on{opacity:1;transition:none}
+.js .reveal.in-view .fork-comet,.js .reveal.in-view .fork-path{animation:none;transition:none;stroke-dashoffset:0}
+.fork-comet{stroke-dashoffset:0}
+.fork-end{transition:none;opacity:1;transform:none}
 }

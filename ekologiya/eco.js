@@ -122,3 +122,14 @@ if ('IntersectionObserver' in window && Element.prototype.animate) {
   if (preference.addEventListener) preference.addEventListener('change', cancelClosingMotion);
   else if (preference.addListener) preference.addListener(cancelClosingMotion);
 }
+
+// Arrival moments: a flock crosses the sky once as the reader reaches each scene.
+if ('IntersectionObserver' in window) {
+  const runFlock = scene => { scene.classList.remove('fly-run'); void scene.offsetWidth; scene.classList.add('fly-run'); };
+  const skyObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    const scene = entry.target;
+    if (entry.isIntersecting) { clearTimeout(scene._flockTimer); scene._flockTimer = setTimeout(() => runFlock(scene), 250); }
+    else { clearTimeout(scene._flockTimer); scene.classList.remove('fly-run'); }
+  }), { threshold: 0.3 });
+  $$('.hero-image, .story-art-frame').forEach(scene => skyObserver.observe(scene));
+}

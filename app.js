@@ -340,3 +340,22 @@ function onMotionPreferenceChange(event){
 }
 if (motionPreference.addEventListener) motionPreference.addEventListener('change',onMotionPreferenceChange);
 else if (motionPreference.addListener) motionPreference.addListener(onMotionPreferenceChange);
+
+// Sky scenes: one cinematic flock flyover each time the reader arrives ("lands").
+// The scene rests afterwards; returning re-plays the moment.
+if ('IntersectionObserver' in window) {
+  const runFlock = scene => { scene.classList.remove('fly-run'); void scene.offsetWidth; scene.classList.add('fly-run'); };
+  const skyObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    const scene = entry.target;
+    if (entry.isIntersecting) {
+      const root = document.documentElement;
+      const wait = scene.classList.contains('hero') && root.classList.contains('entry-motion') && !root.classList.contains('entry-skipped') ? 3400 : 0;
+      clearTimeout(scene._flockTimer);
+      scene._flockTimer = setTimeout(() => runFlock(scene), wait);
+    } else {
+      clearTimeout(scene._flockTimer);
+      scene.classList.remove('fly-run');
+    }
+  }), { threshold: 0.25 });
+  $$('.hero, .poem-scene, .mountain-scene').forEach(scene => skyObserver.observe(scene));
+}
