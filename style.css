@@ -219,3 +219,56 @@ i{letter-spacing:-.035em}
  .food-star{top:27svh}
  .food-footer{bottom:42px;font-size:9px}
 }
+
+/* =================================
+   11) Eco portal — home ending transition + motion layer
+   ================================= */
+.story-hint{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);border-bottom:1px solid;padding:8px 0}
+.eco-portal{padding:0;overflow:hidden}
+.eco-portal-link{display:block;color:var(--cream);text-decoration:none;padding-bottom:4vw}
+.eco-marquee{border-bottom:1px solid var(--cream-line);overflow:hidden;padding:13px 0}
+.eco-marquee-track{display:flex;gap:2.5em;width:max-content;animation:eco-marquee 26s linear infinite}
+.eco-marquee-track span{font-size:11px;letter-spacing:.18em;white-space:nowrap}
+@keyframes eco-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.eco-portal-top{display:flex;justify-content:space-between;gap:15px;padding:22px 2.5vw 0;font-size:9px;letter-spacing:.08em;color:var(--cream-soft)}
+.eco-portal-stage{position:relative;display:grid;grid-template-columns:1.25fr .75fr;align-items:center;gap:2vw;padding:2vw 2.5vw 3vw}
+.eco-portal-title{margin:0;font-family:var(--display);font-size:clamp(58px,12.5vw,175px);line-height:.85;letter-spacing:-.05em;color:var(--cream)}
+.eco-portal-title .cut{color:transparent;background:url('/assets/eco-river-illustration.png') center 30%/cover;-webkit-background-clip:text;background-clip:text;-webkit-text-stroke:1px rgba(241,233,214,.55)}
+@supports not ((-webkit-background-clip:text) or (background-clip:text)){.eco-portal-title .cut{color:var(--cream)}}
+.eco-portal-card{justify-self:end;width:min(330px,100%);padding:14px 14px 48px;transform:rotate(2.5deg);transition:transform .5s var(--ease)}
+.eco-portal-card img{aspect-ratio:1.25;object-fit:cover;filter:contrast(1.05)}
+.eco-portal-card figcaption{position:absolute;left:18px;bottom:12px;font-family:var(--hand);font-size:20px;color:var(--ink)}
+.eco-portal-copy{grid-column:1/-1;font-size:clamp(14px,1.45vw,18px);line-height:1.75;color:var(--cream-soft);max-width:560px}
+.eco-portal-foot{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:0 2.5vw;padding:22px 0 0;border-top:1px solid var(--cream-line);font-size:10px;letter-spacing:.08em}
+.eco-portal-arrow{font-size:clamp(30px,4vw,52px);line-height:1;transition:transform .4s var(--ease)}
+.eco-portal-link:hover .eco-portal-arrow,.eco-portal-link:focus-visible .eco-portal-arrow{transform:translate(6px,6px)}
+.eco-portal-link:hover .eco-portal-card,.eco-portal-link:focus-visible .eco-portal-card{transform:rotate(-1deg) translateY(-6px)}
+@media(prefers-reduced-motion:no-preference){
+.eco-marquee-track{will-change:transform}
+.intro-photo img,.outro-photo img{animation:float-soft 8s ease-in-out infinite alternate}
+.hero-stamp{animation:stamp-float 6s ease-in-out infinite alternate}
+.little-star{animation:twinkle 3.4s ease-in-out infinite alternate}
+.gallery-strip-track{animation:gallery-drift 9s ease-in-out infinite alternate}
+@keyframes float-soft{from{transform:translateY(0) rotate(-1deg)}to{transform:translateY(-10px) rotate(1deg)}}
+@keyframes stamp-float{from{transform:rotate(-7deg) translateY(0)}to{transform:rotate(-3deg) translateY(-8px)}}
+@keyframes twinkle{from{opacity:.55;transform:rotate(0)}to{opacity:1;transform:rotate(45deg)}}
+@keyframes gallery-drift{from{transform:translateX(0)}to{transform:translateX(-2.5%)}}
+}
+@media(prefers-reduced-motion:reduce){.eco-marquee-track,.gallery-strip-track{animation:none}}
+.gallery-strip{overflow:hidden}
+.text-link,.story-link,.city-link{position:relative}
+.text-link>span,.story-link>span{display:inline-block;transition:transform .3s var(--ease)}
+.text-link:hover>span,.story-link:hover>span{transform:translate(4px,-4px)}
+.word-row{transition:background .35s var(--ease)}
+.word-row:hover{background:rgba(241,233,214,.08)}
+.word-row:hover .word-row-tag{transform:translateX(-8px)}
+.word-row-tag{transition:transform .35s var(--ease)}
+.city-row{transition:transform .35s var(--ease)}
+.city-row:hover{transform:translateX(6px)}
+@media(max-width:650px){
+.eco-portal-stage{grid-template-columns:1fr;gap:26px;padding:16px 5vw 26px}
+.eco-portal-title{font-size:clamp(52px,17vw,96px)}
+.eco-portal-card{justify-self:start;width:min(260px,80vw)}
+.eco-portal-copy{font-size:14px}
+.eco-portal-foot{margin:0 5vw}
+}

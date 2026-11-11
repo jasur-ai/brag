@@ -86,3 +86,37 @@ test('new alphabet and accessible entrance are used across the site', async () =
   assert.match(css, /pointer-events:none/);
   assert.equal((await fetch(base + '/entrance.js')).status, 200);
 });
+
+test('home transitions to ecology through the portal scene', async () => {
+  const home = await (await fetch(base + '/')).text();
+  assert.match(home, /class="eco-portal dark"/);
+  assert.match(home, /class="eco-portal-title"/);
+  assert.match(home, /EKOLO<span class="cut">GIYA<\/span>/);
+  assert.match(home, /Butun tizim — bir butilka orqali/);
+  assert.match(home, /eco-marquee/);
+});
+
+test('ecology frames the problem bigger than the bottle', async () => {
+  const eco = await (await fetch(base + '/ekologiya/')).text();
+  assert.match(eco, /MUAMMO — BUTILKA EMAS/);
+  assert.match(eco, /Uning yöli/);
+  assert.match(eco, /BUTILKA ORQALI — BUTUN TIZIM/);
+  assert.doesNotMatch(eco, /hisoblagich|kalkulyator/i);
+});
+
+test('ecology evidence wears animated stat rings', async () => {
+  const eco = await (await fetch(base + '/ekologiya/')).text();
+  assert.equal((eco.match(/class="stat-ring"/g) || []).length, 3);
+  assert.match(eco, /--p:\.919/);
+  assert.match(eco, /--p:\.85/);
+  assert.match(eco, /--p:\.31/);
+  assert.match(eco, /class="eco-ticker"/);
+  assert.match(eco, /class="station reveal"/);
+});
+
+test('ecology closing image stays a small postcard', async () => {
+  const eco = await (await fetch(base + '/ekologiya/')).text();
+  assert.match(eco, /class="closing-card"/);
+  assert.match(eco, /kimning yölida qoladi\?/);
+  assert.equal((eco.match(/class="story-step reveal"/g) || []).length, 3);
+});

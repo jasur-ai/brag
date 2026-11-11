@@ -36,6 +36,7 @@ The working branch for this session is `arena/3fdaad18-brag`. Review changes bef
 - `assets/` — 15 photographs, local fonts, original SVG graphics and image credits
 - `server.cjs` — dependency-free development server
 - `vercel.json` — static routing and security headers
+- `docs/TOP-SITES-NOTES.md` — analysis of Eleken's 50 best website designs and how the relevant techniques are applied here
 
 ## Accessibility and performance
 
