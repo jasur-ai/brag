@@ -109,3 +109,52 @@
 .system-flow .station:not(:last-child)::before{left:22px;top:48px}
 .eco-closing .closing-card{margin:42px auto 0;width:min(280px,82vw)}
 }
+
+/* Living motion layer: flocks, zooms, floats */
+.flock{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:3}
+.fly-bird{position:absolute;width:30px;height:22px;will-change:transform,scale}
+.hero-image{overflow:hidden}
+.hero-image .fly-bird{color:#14201a;opacity:.85}
+.fly-bird.fb-one{top:16%}
+.fly-bird.fb-two{top:24%;width:21px;height:16px}
+.fly-bird.fb-three{top:10%;width:15px;height:12px;opacity:.8}
+@media(prefers-reduced-motion:no-preference){
+.fly-bird.fb-one{animation:eco-fly 17s linear infinite,eco-flap .85s ease-in-out infinite alternate}
+.fly-bird.fb-two{animation:eco-fly 23s linear -7s infinite,eco-flap 1.05s ease-in-out infinite alternate}
+.fly-bird.fb-three{animation:eco-fly 29s linear -15s infinite,eco-flap .7s ease-in-out infinite alternate}
+.hero-image>img{animation:eco-zoom 16s ease-in-out infinite alternate}
+.image-label{animation:eco-fade-up 1.1s var(--ease) .35s both}
+.image-coord{animation:eco-fade-up 1.1s var(--ease) .6s both}
+.story-art-frame{overflow:hidden}
+.story-art-frame img{animation:eco-zoom 18s ease-in-out infinite alternate}
+.map-bottle{animation:bottle-bob 3.2s ease-in-out infinite alternate}
+.evidence-lead.reveal h3{will-change:transform}
+.sources li{transition:background .3s var(--ease)}
+.sources li:hover{background:#18221b0d}
+.inline-source{transition:border-color .3s var(--ease)}
+.inline-source:hover{border-color:var(--ink)}
+.journey-next{transition:transform .35s var(--ease),background .35s var(--ease),color .35s var(--ease)}
+.journey-next:hover{transform:translateY(-2px)}
+.hero-link>span{display:inline-block;transition:transform .35s var(--ease)}
+.hero-link:hover>span{transform:translateY(5px)}
+}
+.eco-closing .closing-card{animation:none}
+@media(prefers-reduced-motion:no-preference){
+.eco-closing .closing-card{animation:card-float 7s ease-in-out infinite alternate}
+}
+@keyframes eco-fly{
+ from{transform:translateX(-14vw) translateY(0)}
+ 20%{transform:translateX(18vw) translateY(-2.5vh)}
+ 45%{transform:translateX(48vw) translateY(1.5vh)}
+ 70%{transform:translateX(78vw) translateY(-2vh)}
+ to{transform:translateX(114vw) translateY(0)}}
+@keyframes eco-flap{from{scale:1 1}to{scale:1 .5}}
+@keyframes eco-zoom{from{scale:1}to{scale:1.07}}
+@keyframes eco-fade-up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes bottle-bob{from{translate:0 0}to{translate:0 -6px}}
+@keyframes card-float{from{translate:0 0}to{translate:0 -9px}}
+@media(prefers-reduced-motion:reduce){
+.fly-bird{animation:none}
+.hero-image>img,.story-art-frame img,.map-bottle,.eco-closing .closing-card{animation:none}
+.image-label,.image-coord{animation:none;opacity:1}
+}

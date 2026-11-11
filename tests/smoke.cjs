@@ -96,12 +96,30 @@ test('home transitions to ecology through the portal scene', async () => {
   assert.match(home, /eco-marquee/);
 });
 
-test('ecology frames the problem bigger than the bottle', async () => {
+test('ecology frames the fate of what we discard', async () => {
   const eco = await (await fetch(base + '/ekologiya/')).text();
-  assert.match(eco, /MUAMMO — BUTILKA EMAS/);
-  assert.match(eco, /Uning yöli/);
+  assert.match(eco, /TAŞLAGANIMIZNING/);
+  assert.match(eco, /taqdiri/);
+  assert.match(eco, /EKOLGIYA — BIZ QOLDIRADIGAN IZ/);
   assert.match(eco, /BUTILKA ORQALI — BUTUN TIZIM/);
   assert.doesNotMatch(eco, /hisoblagich|kalkulyator/i);
+  assert.doesNotMatch(eco, /MUAMMO — BUTILKA EMAS/);
+});
+
+test('flying flocks animate the skies on both pages', async () => {
+  const home = await (await fetch(base + '/')).text();
+  const eco = await (await fetch(base + '/ekologiya/')).text();
+  assert.equal((home.match(/class="fly-bird/g) || []).length, 9);
+  assert.equal((eco.match(/class="fly-bird/g) || []).length, 3);
+  for (const html of [home, eco]) {
+    assert.match(html, /#swallow/);
+    assert.match(html, /class="flock/);
+  }
+  assert.match(home, /class="flock hero-flock"/);
+  assert.match(home, /class="flock poem-flock"/);
+  assert.match(home, /class="flock mountain-flock"/);
+  assert.match(home, /class="food-steam"/);
+  assert.match(eco, /class="flock hero-flock"/);
 });
 
 test('ecology evidence wears animated stat rings', async () => {
