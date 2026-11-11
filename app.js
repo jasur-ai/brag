@@ -4,21 +4,21 @@ const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
 const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 let reducedMotion = motionPreference.matches;
 const photoData = [
- {key:'registan',title:'Registon, Samarqand',category:'architecture',ratio:'.91',message:'Moviy gumbazlar ostida asrlar bir-biri bilan suhbatlashadi.',source:'Unsplash',url:'https://unsplash.com/s/photos/uzbekistan'},
- {key:'mountains',title:'Chorvoq, Toshkent viloyati',category:'nature',ratio:'.77',message:'Tog‘larning sukunati. Suvning moviyligi. Bir nafas xotirjamlik.',source:'Pexels',id:26729708},
- {key:'bukhara',title:'Poyi Kalon, Buxoro',category:'architecture',ratio:'.72',message:'Har bir g‘ishtda vaqtning izi, har bir ko‘chada bir hikoya.',source:'Pexels',id:39411349},
- {key:'khiva',title:'Ichan qal’a, Xiva',category:'architecture',ratio:'.76',message:'Go‘yo ertak kitobining ichiga kirib qolgandek.',source:'Pexels',id:35375813},
- {key:'charvak',title:'Chorvoq sohillari',category:'nature',ratio:'.73',message:'Shoshmasdan qarang. Bu manzara eslab qolishga arziydi.',source:'Pexels',id:30827061},
- {key:'shahi',title:'Shohi Zinda, Samarqand',category:'architecture',ratio:'1.03',message:'Koshinlarda yashiringan ming bir rang, ming bir xotira.',source:'Pexels',id:19439170},
- {key:'tashkent',title:'Hazrati Imom, Toshkent',category:'architecture',ratio:'1.08',message:'Shahar shovqini orasidagi sokin bir olam.',source:'Pexels',id:19227998},
- {key:'bread',title:'Tandir non',category:'food',ratio:'.75',message:'Yangi yopilgan nonning hidi. Uy degan tuyg‘uning eng tanish ifodasi.',source:'Pexels',id:39597532},
- {key:'dome',title:'Samarqand koshinlari',category:'architecture',ratio:'.76',message:'Osmon rangini yerga olib tushgan ustalar xotirasi.',source:'Pexels',id:19439144},
- {key:'samarkand',title:'Shohi Zinda gumbazlari',category:'architecture',ratio:'1.12',message:'Bir-biriga tutashgan asrlar, bir-biriga o‘xshamagan naqshlar.',source:'Pexels',id:16534573},
- {key:'plov',title:'O‘zbek palovi',category:'food',ratio:'.8',message:'Bir dasturxon atrofida notanish inson ham yaqin bo‘lib qoladi.',source:'Pexels',id:32558904},
- {key:'bibi',title:'Bibixonim, Samarqand',category:'architecture',ratio:'.72',message:'Ulug‘vorlikni ko‘rish mumkin. Ruhini esa his qilish kerak.',source:'Pexels',id:19439200},
- {key:'street',title:'Samarqand ko‘chalari',category:'architecture',ratio:'.7',message:'Bu yo‘llardan qancha inson, qancha orzu o‘tgan.',source:'Pexels',id:19839437},
- {key:'art',title:'Hazrati Imomdagi san’at',category:'architecture',ratio:'1.05',message:'Go‘zallikni yaratadigan qo‘llar. Uni asraydigan qalblar.',source:'Pexels',id:19227987},
- {key:'cooking',title:'Toshkent dasturxoni',category:'food',ratio:'.77',message:'Qozon boshida boshlangan suhbat, dasturxon atrofida davom etadi.',source:'Pexels',id:39561317}
+ {key:'registan',title:'Registon, Samarqand',category:'architecture',ratio:'.91',message:'Moviy gumbazlar ostida asrlar bir-biri bilan suhbatlaşadi.',source:'Unsplash',url:'https://unsplash.com/s/photos/uzbekistan'},
+ {key:'mountains',title:'Çorvoq, Toşkent viloyati',category:'nature',ratio:'.77',message:'Toğlarning sukunati. Suvning moviyligi. Bir nafas xotirjamlik.',source:'Pexels',id:26729708},
+ {key:'bukhara',title:'Poyi Kalon, Buxoro',category:'architecture',ratio:'.72',message:'Har bir ğiştda vaqtning izi, har bir köçada bir hikoya.',source:'Pexels',id:39411349},
+ {key:'khiva',title:'Içan qalʼa, Xiva',category:'architecture',ratio:'.76',message:'Göyo ertak kitobining içiga kirib qolgandek.',source:'Pexels',id:35375813},
+ {key:'charvak',title:'Çorvoq sohillari',category:'nature',ratio:'.73',message:'Şoşmasdan qarang. Bu manzara eslab qolişga arziydi.',source:'Pexels',id:30827061},
+ {key:'shahi',title:'Şohi Zinda, Samarqand',category:'architecture',ratio:'1.03',message:'Koşinlarda yaşiringan ming bir rang, ming bir xotira.',source:'Pexels',id:19439170},
+ {key:'tashkent',title:'Hazrati Imom, Toşkent',category:'architecture',ratio:'1.08',message:'Şahar şovqini orasidagi sokin bir olam.',source:'Pexels',id:19227998},
+ {key:'bread',title:'Tandir non',category:'food',ratio:'.75',message:'Yangi yopilgan nonning hidi. Uy degan tuyğuning eng taniş ifodasi.',source:'Pexels',id:39597532},
+ {key:'dome',title:'Samarqand koşinlari',category:'architecture',ratio:'.76',message:'Osmon rangini yerga olib tuşgan ustalar xotirasi.',source:'Pexels',id:19439144},
+ {key:'samarkand',title:'Şohi Zinda gumbazlari',category:'architecture',ratio:'1.12',message:'Bir-biriga tutaşgan asrlar, bir-biriga öxşamagan naqşlar.',source:'Pexels',id:16534573},
+ {key:'plov',title:'Özbek palovi',category:'food',ratio:'.8',message:'Bir dasturxon atrofida notaniş inson ham yaqin bölib qoladi.',source:'Pexels',id:32558904},
+ {key:'bibi',title:'Bibixonim, Samarqand',category:'architecture',ratio:'.72',message:'Uluğvorlikni köriş mumkin. Ruhini esa his qiliş kerak.',source:'Pexels',id:19439200},
+ {key:'street',title:'Samarqand köçalari',category:'architecture',ratio:'.7',message:'Bu yöllardan qança inson, qança orzu ötgan.',source:'Pexels',id:19839437},
+ {key:'art',title:'Hazrati Imomdagi sanʼat',category:'architecture',ratio:'1.05',message:'Gözallikni yaratadigan qöllar. Uni asraydigan qalblar.',source:'Pexels',id:19227987},
+ {key:'cooking',title:'Toşkent dasturxoni',category:'food',ratio:'.77',message:'Qozon boşida boşlangan suhbat, dasturxon atrofida davom etadi.',source:'Pexels',id:39561317}
 ];
 photoData.forEach(p=>{p.url=p.url||`https://www.pexels.com/photo/${p.id}/`;p.src=`/assets/${p.key}.jpg`;});
 let route = location.pathname.startsWith('/gallery') ? 'gallery' : 'home';
@@ -36,12 +36,12 @@ function createPhotoCard(photo, index, preview = false) {
  const wrap = document.createElement('article');
  wrap.className = 'gallery-item';
  wrap.dataset.category = photo.category;
- wrap.innerHTML = `<button class="photo-card" style="--ratio:${photo.ratio}" aria-label="${photo.title}: suratning orqa tomonini ko‘rish" aria-pressed="false"><div class="photo-card-inner"><div class="card-front"><img src="${photo.src}" alt="${photo.title}" loading="lazy" decoding="async" width="600" height="760"></div><div class="card-back" aria-hidden="true"><span class="card-location">${photo.title}</span><span class="card-message">${photo.message}</span><span class="card-number">O‘ZBEKISTONGA MAKTUB / ${String(index+1).padStart(2,'0')}</span></div></div></button><div class="gallery-card-tools"><span>${photo.title}</span><button aria-label="${photo.title}: suratni kattalashtirish">Ochish ↗</button></div>`;
+ wrap.innerHTML = `<button class="photo-card" style="--ratio:${photo.ratio}" aria-label="${photo.title}: suratning orqa tomonini köriş" aria-pressed="false"><div class="photo-card-inner"><div class="card-front"><img src="${photo.src}" alt="${photo.title}" loading="lazy" decoding="async" width="600" height="760"></div><div class="card-back" aria-hidden="true"><span class="card-location">${photo.title}</span><span class="card-message">${photo.message}</span><span class="card-number">ÖZBEKISTONGA MAKTUB / ${String(index+1).padStart(2,'0')}</span></div></div></button><div class="gallery-card-tools"><span>${photo.title}</span><button aria-label="${photo.title}: suratni kattalaştiriş">Oçiş ↗</button></div>`;
  const card=$('.photo-card',wrap);
  card.addEventListener('click',()=>{
   const flipped=card.classList.toggle('flipped');
   card.setAttribute('aria-pressed',String(flipped));
-  card.setAttribute('aria-label',`${photo.title}: suratning ${flipped?'old':'orqa'} tomonini ko‘rish`);
+  card.setAttribute('aria-label',`${photo.title}: suratning ${flipped?'old':'orqa'} tomonini köriş`);
   $('.card-back',card).setAttribute('aria-hidden',String(!flipped));
   $('.card-front',card).setAttribute('aria-hidden',String(flipped));
  });
@@ -79,10 +79,10 @@ function openMenu(){
  menuReturnFocus=document.activeElement;
  const dialog=$('#site-menu');dialog.classList.remove('about-open');$('.about-panel').hidden=true;
  $('.about-toggle').setAttribute('aria-expanded','false');
- openDialog(dialog);$('.menu-toggle').setAttribute('aria-expanded','true');$('.menu-toggle').setAttribute('aria-label','Menyuni yopish');
+ openDialog(dialog);$('.menu-toggle').setAttribute('aria-expanded','true');$('.menu-toggle').setAttribute('aria-label','Menyuni yopiş');
 }
 function closeMenu(){
- closeDialog($('#site-menu'));$('.menu-toggle').setAttribute('aria-expanded','false');$('.menu-toggle').setAttribute('aria-label','Menyuni ochish');
+ closeDialog($('#site-menu'));$('.menu-toggle').setAttribute('aria-expanded','false');$('.menu-toggle').setAttribute('aria-label','Menyuni oçiş');
  if(menuReturnFocus && document.contains(menuReturnFocus))menuReturnFocus.focus({preventScroll:true});
 }
 $('.menu-toggle').addEventListener('click',()=>$('#site-menu').open?closeMenu():openMenu());
@@ -109,7 +109,7 @@ function navigate(next,push=true){
  closeMenu();
  $('#home-view').hidden=next!=='home';$('#gallery-view').hidden=next!=='gallery';
  $('.chapter-indicator').style.display=next==='home'?'':'none';
- document.title=next==='gallery'?'Xotiralar galereyasi — O‘zbekistonga maktub':'O‘zbekistonga maktub — Bir yurt. Ming bir hikoya.';
+ document.title=next==='gallery'?'Xotiralar galereyasi — Özbekistonga maktub':'Özbekistonga maktub — Bir yurt. Ming bir hikoya.';
  if(push&&changed)history.pushState({route:next},'',next==='gallery'?'/gallery/':'/');
  if(changed||!push||next==='home')window.scrollTo({top:0,behavior:'instant'});
  if(changed)$('#main').focus({preventScroll:true});
@@ -121,7 +121,7 @@ window.addEventListener('popstate',()=>navigate(location.pathname.startsWith('/g
 // Initialise without changing the URL.
 $('#home-view').hidden=route!=='home';$('#gallery-view').hidden=route!=='gallery';
 $('.chapter-indicator').style.display=route==='home'?'':'none';
-if(route==='gallery')document.title='Xotiralar galereyasi — O‘zbekistonga maktub';
+if(route==='gallery')document.title='Xotiralar galereyasi — Özbekistonga maktub';
 
 function updateLightbox(){
  const photo=lightboxSequence[lightboxIndex];
@@ -158,10 +158,10 @@ $$('.creator-toggle').forEach(button=>button.addEventListener('click',()=>{
  $('.toggle-symbol',button).textContent=expanded?'+':'−';button.parentElement.classList.toggle('open',!expanded);
 }));
 const cityData={
- tashkent:{image:'tashkent',alt:'Toshkentdagi Hazrati Imom majmuasi',caption:'Toshkent. Eski va yangi orasidagi mehr.',coordinate:'41°18′ N · 69°16′ E',copy:'Keng ko‘chalar, soyali chinorlar, tanish mahallalar. Har safar yangilanadigan, ammo mehri o‘zgarmaydigan shahar.'},
- samarkand:{image:'registan',alt:'Samarqanddagi Registon ansambli',caption:'Samarqand. Osmon yerga tushgan shahar.',coordinate:'39°39′ N · 66°58′ E',copy:'Moviy gumbazlar va ulug‘vor peshtoqlar. Buyuk Ipak yo‘lining chorrahasida o‘tmish bilan bugun yonma-yon yuradi.'},
- bukhara:{image:'bukhara',alt:'Buxorodagi Poyi Kalon minorasi',caption:'Buxoro. Vaqt ham sekin yuradigan joy.',coordinate:'39°46′ N · 64°26′ E',copy:'Ko‘hna ko‘chalarda, salqin hovlilarda, minoralar soyasida bir tanish osoyishtalik bor. Buxoro — xotiraning o‘zi.'},
- khiva:{image:'khiva',alt:'Xivadagi Ichan qal’a me’morchiligi',caption:'Xiva. Ertaklar ham shu yerda yashaydi.',coordinate:'41°23′ N · 60°22′ E',copy:'Qal’a devorlari ortida butun bir dunyo. Quyosh botganda g‘ishtlar oltin tusga kiradi, ko‘ngil esa uzoq qolishni istaydi.'}
+ tashkent:{image:'tashkent',alt:'Toşkentdagi Hazrati Imom majmuasi',caption:'Toşkent. Eski va yangi orasidagi mehr.',coordinate:'41°18′ N · 69°16′ E',copy:'Keng köçalar, soyali çinorlar, taniş mahallalar. Har safar yangilanadigan, ammo mehri özgarmaydigan şahar.'},
+ samarkand:{image:'registan',alt:'Samarqanddagi Registon ansambli',caption:'Samarqand. Osmon yerga tuşgan şahar.',coordinate:'39°39′ N · 66°58′ E',copy:'Moviy gumbazlar va uluğvor peştoqlar. Buyuk Ipak yölining çorrahasida ötmiş bilan bugun yonma-yon yuradi.'},
+ bukhara:{image:'bukhara',alt:'Buxorodagi Poyi Kalon minorasi',caption:'Buxoro. Vaqt ham sekin yuradigan joy.',coordinate:'39°46′ N · 64°26′ E',copy:'Köhna köçalarda, salqin hovlilarda, minoralar soyasida bir taniş osoyiştalik bor. Buxoro — xotiraning özi.'},
+ khiva:{image:'khiva',alt:'Xivadagi Içan qalʼa meʼmorçiligi',caption:'Xiva. Ertaklar ham şu yerda yaşaydi.',coordinate:'41°23′ N · 60°22′ E',copy:'Qalʼa devorlari ortida butun bir dunyo. Quyoş botganda ğiştlar oltin tusga kiradi, köngil esa uzoq qolişni istaydi.'}
 };
 function selectCity(button){
  const city=cityData[button.dataset.city];
@@ -186,8 +186,8 @@ function toast(message){const el=$('.toast');el.textContent=message;el.classList
 $('.share-button').addEventListener('click',async()=>{
  const url=location.origin+'/';
  try{
-  if(navigator.share){await navigator.share({title:'O‘zbekistonga maktub',text:'Bir yurt. Ming bir hikoya.',url});return;}
-  if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(url);toast('Maktub havolasi nusxalandi. Mehr ulashing!');}
+  if(navigator.share){await navigator.share({title:'Özbekistonga maktub',text:'Bir yurt. Ming bir hikoya.',url});return;}
+  if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(url);toast('Maktub havolasi nusxalandi. Mehr ulaşing!');}
   else{const field=document.createElement('textarea');field.value=url;field.style.position='fixed';field.style.opacity='0';document.body.append(field);field.select();const ok=document.execCommand('copy');field.remove();toast(ok?'Maktub havolasi nusxalandi.':url);}
  }catch(err){if(err.name!=='AbortError')toast('Havolani brauzer manzilidan nusxalang.');}
 });
@@ -223,10 +223,10 @@ const poem=$('.poem-scene');
 const food=$('.food');
 const parallaxItems=$$('[data-parallax]');
 const poemVerses=[
- ['Tonglaringda quyosh bilan uyg‘ondim,','Tuprog‘ingda o‘zligimni men topdim.','Har yo‘lingda bir hikoya, bir umid.'],
- ['Tuprog‘ingda o‘zligimni men topdim.','Har yo‘lingda bir hikoya, bir umid.','Sen bor joyda ko‘nglim doim yorug‘dir.'],
- ['Har yo‘lingda bir hikoya, bir umid.','Sen bor joyda ko‘nglim doim yorug‘dir.','Mehring bilan dunyo menga yaqindir.'],
- ['Sen bor joyda ko‘nglim doim yorug‘dir.','Mehring bilan dunyo menga yaqindir.','O‘zbekiston — yuragimdagi yurtim.']
+ ['Tonglaringda quyoş bilan uyğondim,','Tuproğingda özligimni men topdim.','Har yölingda bir hikoya, bir umid.'],
+ ['Tuproğingda özligimni men topdim.','Har yölingda bir hikoya, bir umid.','Sen bor joyda könglim doim yoruğdir.'],
+ ['Har yölingda bir hikoya, bir umid.','Sen bor joyda könglim doim yoruğdir.','Mehring bilan dunyo menga yaqindir.'],
+ ['Sen bor joyda könglim doim yoruğdir.','Mehring bilan dunyo menga yaqindir.','Özbekiston — yuragimdagi yurtim.']
 ];
 function clamp(v,min=0,max=1){return Math.min(max,Math.max(min,v));}
 // Read layout first, then apply changes together to avoid repeated layout work while scrolling.

@@ -48,7 +48,7 @@ test('ecology explains an evidence-backed deposit-return proposal', async () => 
     assert.match(html, /id="journey-next"/);
     assert.match(html, /class="narrative-track"/);
     assert.equal((html.match(/class="narrative-panel"/g) || []).length, 4);
-    assert.match(html, /HAQIQIY TO‘LOV EMAS/);
+    assert.match(html, /HAQIQIY TÖLOV EMAS/);
     assert.match(html, /<noscript>/);
     assert.doesNotMatch(html, /<form|hisoblagich|kalkulyator/i);
     assert.doesNotMatch(html, /murojaat/i);
@@ -57,4 +57,27 @@ test('ecology explains an evidence-backed deposit-return proposal', async () => 
   for (const asset of ['/ekologiya/eco.css', '/ekologiya/eco.js', '/assets/eco-river-illustration.png', '/assets/eco-mahalla-engraving.png']) {
     assert.equal((await fetch(base + asset)).status, 200, asset);
   }
+});
+
+
+test('new alphabet and accessible entrance are used across the site', async () => {
+  const home = await (await fetch(base + '/')).text();
+  const eco = await (await fetch(base + '/ekologiya/')).text();
+  const homeScript = await (await fetch(base + '/app.js')).text();
+  const ecoScript = await (await fetch(base + '/ekologiya/eco.js')).text();
+  for (const html of [home, eco]) {
+    assert.match(html, /class="entrance" aria-hidden="true"/);
+    assert.match(html, /href="\/entrance.css"/);
+    assert.match(html, /src="\/entrance.js"/);
+    assert.match(html, /Özbekistonga/);
+  }
+  assert.match(home, /Toşkent/);
+  assert.match(homeScript, /Çorvoq/);
+  assert.match(ecoScript, /DÖKONDA/);
+  assert.match(ecoScript, /1 000 söm/);
+  assert.match(eco, /kimning yölida qoladi\?/);
+  const css = await (await fetch(base + '/entrance.css')).text();
+  assert.match(css, /prefers-reduced-motion:no-preference/);
+  assert.match(css, /pointer-events:none/);
+  assert.equal((await fetch(base + '/entrance.js')).status, 200);
 });

@@ -57,10 +57,10 @@ const journeyHeading = $('#ticket-heading'), journeyCopy = $('#ticket-copy');
 const journeyReceipt = $('#ticket-receipt'), journeyStatus = $('#ticket-status');
 const journeyKicker = $('#ticket-kicker'), journeySteps = $$('.journey-steps li');
 const scenes = [
-  { kicker: 'DO‘KONDA', heading: 'Bir butilka.<br><em>Ikki narx.</em>', copy: 'Ichimlik va qaytariladigan garov chekda alohida ko‘rsatiladi.', rows: [['Ichimlik', '5 000 so‘m'], ['Qaytariladigan garov', '1 000 so‘m'], ['To‘lov', '6 000 so‘m']], status: 'Garov — idishni qaytarganingizda qaytariladigan pul.', next: 'BUTILKANI SOTIB OLISH' },
-  { kicker: 'XARID', heading: 'Ichimlik sizda.<br><em>Garov hisobda.</em>', copy: 'Siz ichimlik bilan garovni to‘ladingiz. Bo‘sh idishdagi belgini saqlang.', rows: [['To‘langan summa', '6 000 so‘m'], ['Shundan qaytariladi', '1 000 so‘m']], status: 'Tasviriy xarid yakunlandi. Endi idishni qaytaring.', next: 'BUTILKANI QAYTARISH' },
-  { kicker: 'QAYTARISH', heading: 'Butilka qaytdi.<br><em>Pul ham.</em>', copy: 'Do‘kon belgilangan bo‘sh idishni qabul qiladi va sizga garovni qaytaradi.', rows: [['Qabul qilindi', '1 ta PET idish'], ['Sizga qaytdi', '1 000 so‘m']], status: 'Bu bonus emas — avval to‘langan garovning qaytishi.', next: 'KEYINGI YO‘LINI KO‘RISH' },
-  { kicker: 'QABUL', heading: 'Chiqindiga emas.<br><em>Qabulga.</em>', copy: 'Operator alohida yig‘ilgan PETni olib ketadi; qayta ishlovchi qabulini hujjat bilan tasdiqlaydi.', rows: [['Do‘kon', 'Alohida yig‘adi'], ['Operator', 'Olib ketadi'], ['Qayta ishlovchi', 'Qabulni tasdiqlaydi']], status: 'Qabul qilish — qayta ishlash sodir bo‘lganini anglatmaydi.', next: 'YANA KO‘RISH' }
+  { kicker: 'DÖKONDA', heading: 'Bir butilka.<br><em>Ikki narx.</em>', copy: 'Içimlik va qaytariladigan garov çekda alohida körsatiladi.', rows: [['Içimlik', '5 000 söm'], ['Qaytariladigan garov', '1 000 söm'], ['Tölov', '6 000 söm']], status: 'Garov — idişni qaytarganingizda qaytariladigan pul.', next: 'BUTILKANI SOTIB OLIŞ' },
+  { kicker: 'XARID', heading: 'Içimlik sizda.<br><em>Garov hisobda.</em>', copy: 'Siz içimlik bilan garovni töladingiz. Böş idişdagi belgini saqlang.', rows: [['Tölangan summa', '6 000 söm'], ['Şundan qaytariladi', '1 000 söm']], status: 'Tasviriy xarid yakunlandi. Endi idişni qaytaring.', next: 'BUTILKANI QAYTARIŞ' },
+  { kicker: 'QAYTARIŞ', heading: 'Butilka qaytdi.<br><em>Pul ham.</em>', copy: 'Dökon belgilangan böş idişni qabul qiladi va sizga garovni qaytaradi.', rows: [['Qabul qilindi', '1 ta PET idiş'], ['Sizga qaytdi', '1 000 söm']], status: 'Bu bonus emas — avval tölangan garovning qaytişi.', next: 'KEYINGI YÖLINI KÖRIŞ' },
+  { kicker: 'QABUL', heading: 'Çiqindiga emas.<br><em>Qabulga.</em>', copy: 'Operator alohida yiğilgan PETni olib ketadi; qayta işlovçi qabulini hujjat bilan tasdiqlaydi.', rows: [['Dökon', 'Alohida yiğadi'], ['Operator', 'Olib ketadi'], ['Qayta işlovçi', 'Qabulni tasdiqlaydi']], status: 'Qabul qiliş — qayta işlaş sodir bölganini anglatmaydi.', next: 'YANA KÖRIŞ' }
 ];
 let journeyPhase = 0;
 function renderJourney() {
@@ -83,6 +83,42 @@ function renderJourney() {
     if (index === journeyPhase) step.setAttribute('aria-current', 'step');
     else step.removeAttribute('aria-current');
   });
+  // Keep text changes immediate for assistive technology; animate only their presentation.
+  if (!preference.matches && Element.prototype.animate) {
+    [journeyHeading, journeyCopy, journeyReceipt, journeyStatus].forEach((element, index) => {
+      element.getAnimations().forEach(animation => animation.cancel());
+      element.animate([{ opacity: 0, translate: '0 12px' }, { opacity: 1, translate: '0 0' }],
+        { duration: 520, delay: index * 65, easing: 'cubic-bezier(.22,1,.36,1)' });
+    });
+  }
+
 }
 journeyNext.addEventListener('click', () => { journeyPhase = (journeyPhase + 1) % scenes.length; renderJourney(); });
 journeyBack.addEventListener('click', () => { if (journeyPhase > 0) { journeyPhase--; renderJourney(); } });
+
+// A quiet final reveal: the question and landscape arrive together as the reader reaches them.
+const closing = $('.eco-closing');
+if ('IntersectionObserver' in window && Element.prototype.animate) {
+  const sceneObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    sceneObserver.unobserve(entry.target);
+    if (preference.matches) return;
+    entry.target.querySelector('h2').animate(
+      [{ clipPath: 'inset(0 0 100% 0)', transform: 'translateY(25px)' }, { clipPath: 'inset(0)', transform: 'translateY(0)' }],
+      { duration: 1300, easing: 'cubic-bezier(.22,1,.36,1)' }
+    );
+    entry.target.querySelector('img').animate(
+      [{ clipPath: 'inset(0 0 100% 0)', transform: 'scale(1.08)' }, { clipPath: 'inset(0)', transform: 'scale(1)' }],
+      { duration: 1600, easing: 'cubic-bezier(.22,1,.36,1)' }
+    );
+  }), { threshold: .12 });
+  sceneObserver.observe(closing);
+  const cancelClosingMotion = event => {
+    if (event.matches) {
+      closing.querySelectorAll('h2, img').forEach(element => element.getAnimations().forEach(animation => animation.cancel()));
+      [journeyHeading, journeyCopy, journeyReceipt, journeyStatus].forEach(element => element.getAnimations().forEach(animation => animation.cancel()));
+    }
+  };
+  if (preference.addEventListener) preference.addEventListener('change', cancelClosingMotion);
+  else if (preference.addListener) preference.addListener(cancelClosingMotion);
+}

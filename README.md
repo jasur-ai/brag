@@ -31,7 +31,8 @@ The working branch for this session is `arena/3fdaad18-brag`. Review changes bef
 
 - `index.html` — semantic content, dialogs, route views
 - `style.css` — responsive layouts, paper system and motion
-- `app.js` — routing, interactions and AI-assisted original mountain engraving
+- `app.js` — routing, interactions and scroll motion
+- `entrance.css`, `entrance.js` — four-sheet introductory animation, skippable on interaction
 - `assets/` — 15 photographs, local fonts, original SVG graphics and image credits
 - `server.cjs` — dependency-free development server
 - `vercel.json` — static routing and security headers
@@ -53,3 +54,7 @@ The title dates are 1991–2026. Change the dates deliberately when adapting the
 ## Deployment
 
 The Vercel project `brags` is connected to the repository. Deploy the desired commit using Vercel; local changes are not automatically published until pushed and deployed.
+
+## Uzbek orthography
+
+The visible Uzbek copy, accessibility labels, dynamically generated gallery, city and journey copy, and SVG lettering use the revised alphabet: Ö, Ğ, Ş and Ç. The 2026 law takes effect on 22 April 2027; the site adopts it early at the owner's request. Proper names of external sources, URLs, file paths and technical identifiers are preserved. See [Dunyo information agency](https://dunyo.info/kommentarii/v-uzbekskom-alfavite-poyavyatsya-bukvy-i).
