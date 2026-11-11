@@ -254,12 +254,12 @@ if ('IntersectionObserver' in window && !preference.matches) {
     const decimals = match[3] ? match[3].length : 0;
     const suffix = strong.textContent.trim().slice(match[0].length);
     const started = performance.now();
-    const roll = now => {
-      const t = Math.min(1, (now - started) / 1300);
+    const roll = () => {
+      const t = Math.min(1, Math.max(0, (performance.now() - started) / 1300));
       const eased = 1 - Math.pow(1 - t, 3);
-      const shown = (target * eased).toFixed(decimals).replace('.', ',');
-      strong.textContent = shown + suffix;
+      strong.textContent = (target * eased).toFixed(decimals).replace('.', ',') + suffix;
       if (t < 1) requestAnimationFrame(roll);
+      else strong.textContent = target.toFixed(decimals).replace('.', ',') + suffix;
     };
     requestAnimationFrame(roll);
   }), { threshold: .55 });
