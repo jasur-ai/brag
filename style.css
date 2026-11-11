@@ -175,3 +175,47 @@ i{letter-spacing:-.035em}
  .poem-dots{bottom:15px}
  .poem-bird{width:35px;bottom:10%}
 }
+
+/* The animated lanes belong to the entrance only; the hero opens on the title. */
+.hero{display:flex;flex-direction:column;justify-content:center}
+.hero-topline{position:absolute;top:clamp(16px,3vh,30px);left:0;right:0;display:flex;justify-content:space-between;gap:12px;padding:0 3vw;font-size:9px;letter-spacing:.085em;opacity:.72}
+.hero-title-wrap{margin:0 3vw;padding-top:0}
+.hero-stamp{top:41%;left:auto;right:7%}
+@media(max-width:650px){
+ .hero-topline{top:16px;font-size:6px;letter-spacing:.03em;gap:8px}
+ .hero-title-wrap{margin:0 3vw}
+ .hero-stamp{top:13%;left:auto;right:5%;width:62px}
+}
+@media(max-height:500px) and (min-width:651px){
+ .hero-topline{top:14px}
+ .hero-stamp{top:14%;left:auto;right:5%;width:60px}
+}
+
+/* Food scene: every written line stays clear of the plate at every size. */
+.food-question{top:7svh;left:5vw;width:min(72vw,1180px);text-align:left;font-size:min(8vw,10.5svh);line-height:.94;z-index:1}
+.food-plate{top:35svh;left:24vw;width:min(32vw,44svh);height:min(32vw,44svh)}
+.food-bread{top:38svh;left:61vw;width:min(18vw,26svh)}
+.food-ring{top:28svh;left:19vw;width:min(46vw,62svh);height:min(46vw,62svh)}
+.food-star{top:30svh;left:82vw;width:min(4vw,5.5svh)}
+.food-tag{top:74svh;left:2vw;font-size:min(2.8vw,4.2svh)}
+.food-footer{left:2.5vw;right:clamp(76px,12vw,130px);bottom:7svh;gap:clamp(18px,4vw,70px)}
+.food-caption{max-width:230px}
+@media(max-width:650px){
+ .food-question{top:9svh;left:5vw;width:90vw;font-size:12vw;line-height:1}
+ .food-plate{top:33svh;left:9vw;width:min(58vw,42svh);height:min(58vw,42svh)}
+ .food-bread{top:45svh;left:62vw;width:min(31vw,24svh)}
+ .food-ring{top:30svh;left:2vw;width:80vw;height:80vw}
+ .food-star{top:31svh;left:83vw;width:8vw}
+ .food-tag{top:70svh;left:6vw;font-size:8vw}
+ .food-footer{left:4vw;right:88px;bottom:10svh;gap:10px}
+ .food-caption{max-width:200px}
+}
+@media(max-height:500px) and (min-width:651px){
+ .food-question{top:12svh;width:60vw;font-size:min(5.6vw,9.5svh)}
+ .food-plate{top:39svh;left:26vw;width:min(28vw,42svh);height:min(28vw,42svh)}
+ .food-bread{top:16svh;left:62vw;width:min(16vw,34svh)}
+ .food-bread figcaption{font-size:9px}
+ .food-tag{top:64svh;left:5vw;font-size:min(2.6vw,4.4svh)}
+ .food-star{top:27svh}
+ .food-footer{bottom:42px;font-size:9px}
+}

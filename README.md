@@ -1,6 +1,6 @@
 # O‘zbekistonga maktub
 
-An interactive editorial love letter to Uzbekistan. Four-column 1991–2026 opening, original Uzbek copy, engraved landscape, scroll-controlled poem and food still life, creators, city tabs, reversible photographic postcards, gallery filtering, lightbox, project panel and photo credits.
+An interactive editorial love letter to Uzbekistan. Four-sheet 1991–2026 entrance animation that clears to a clean title hero, original Uzbek copy, engraved landscape, scroll-controlled poem and food still life, creators, city tabs, reversible photographic postcards, gallery filtering, lightbox, project panel and photo credits.
 
 ## Run locally
 

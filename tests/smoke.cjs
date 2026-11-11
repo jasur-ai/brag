@@ -76,6 +76,11 @@ test('new alphabet and accessible entrance are used across the site', async () =
   assert.match(ecoScript, /DÖKONDA/);
   assert.match(ecoScript, /1 000 söm/);
   assert.match(eco, /kimning yölida qoladi\?/);
+  // The opening lanes live in the entrance only; the hero opens on the title.
+  assert.doesNotMatch(home, /hero-grid|year-column/);
+  // Questions appear only at the very end of the ecology story.
+  assert.doesNotMatch(home, /\?/);
+  assert.equal((eco.match(/\?/g) || []).length, 1, 'only the closing question keeps a question mark');
   const css = await (await fetch(base + '/entrance.css')).text();
   assert.match(css, /prefers-reduced-motion:no-preference/);
   assert.match(css, /pointer-events:none/);

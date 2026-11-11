@@ -238,7 +238,7 @@ const poemDots=$$('.poem-dots b');
 const plate=$('.food-plate'), bread=$('.food-bread'), foodQuestion=$('.food-question');
 const mountainScene=$('.mountain-scene'), mountainArt=$('.mountain-engraving'), mountainNote=$('.mountain-note');
 const bookScene=$('.book-collage'), bookBack=$('.book-back');
-const hero=$('.hero'), heroColumns=$$('.year-column');
+const hero=$('.hero');
 const rings=$$('.food-ring'), foodStar=$('.food-star');
 const soul=$('.soul'), soulSky=$('.soul-sky'), soulStar=$('.soul-center .little-star');
 const outro=$('.outro-collage'), outroNote=$('.outro-note');
@@ -307,7 +307,6 @@ function updateScroll(){
  }
  if(introProgress!==null)introImages.forEach((image,i)=>{image.style.transform=`scale(1.06) translateY(${((introProgress-.5)*(i?3:-3)).toFixed(2)}%)`;});
  if(poemProgress!==null)poemBird.style.rotate=`${((poemProgress-.5)*25).toFixed(1)}deg`;
- if(heroProgress!==null)heroColumns.forEach((column,i)=>{column.style.translate=`0 ${(-heroProgress*(12+i*8)).toFixed(1)}px`;});
  if(soulProgress!==null){soulSky.style.transform=`scale(1.08) translateY(${((soulProgress-.5)*-4).toFixed(2)}%)`;soulStar.style.rotate=`${((soulProgress-.5)*90).toFixed(1)}deg`;}
  if(outroProgress!==null){outroNote.style.translate=`0 ${((outroProgress-.5)*-25).toFixed(1)}px`;outroBird.style.rotate=`${((outroProgress-.5)*28).toFixed(1)}deg`;}
  if(mountainProgress!==null){
@@ -329,7 +328,6 @@ function onMotionPreferenceChange(event){
  if(reducedMotion){
   parallaxItems.forEach(item=>item.style.removeProperty('translate'));
   editorialAnimations.forEach(animation=>animation.cancel());
-  heroColumns.forEach(column=>column.style.removeProperty('translate'));
   introImages.forEach(image=>image.style.removeProperty('transform'));
   [poemBird,bookBird,outroBird].forEach(bird=>bird.style.removeProperty('rotate'));
   rings.forEach(ring=>ring.style.removeProperty('transform'));foodStar.style.removeProperty('rotate');
