@@ -161,3 +161,17 @@ i{letter-spacing:-.035em}
  .read-link span{transition:transform .4s var(--ease)}
  .read-link:hover span{transform:translateY(6px)}
 }
+/* Keep the opening and animated verse legible in landscape and short windows. */
+@media (max-height:500px) and (min-width:651px){
+ .hero-grid{height:46svh}
+ .hero-title-wrap{padding-top:3svh}
+ .hero-title{font-size:min(16vw,31svh)}
+ .hero-baseline{margin-top:10px}
+ .hero-stamp{top:55%;left:auto;right:4%;width:60px}
+ .poem-sticky>.eyebrow{top:18px}
+ .poem-lines p{font-size:clamp(23px,7svh,42px)}
+ .poem-lines .poem-current{margin:16px auto}
+ .poem-translation{margin-top:16px}
+ .poem-dots{bottom:15px}
+ .poem-bird{width:35px;bottom:10%}
+}
