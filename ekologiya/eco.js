@@ -84,11 +84,15 @@ function renderJourney() {
   });
   // Keep text changes immediate for assistive technology; animate only their presentation.
   if (!preference.matches && Element.prototype.animate) {
-    [journeyHeading, journeyCopy, journeyReceipt, journeyStatus].forEach((element, index) => {
+    [journeyHeading, journeyCopy, journeyStatus].forEach((element, index) => {
       element.getAnimations().forEach(animation => animation.cancel());
       element.animate([{ opacity: 0, translate: '0 12px' }, { opacity: 1, translate: '0 0' }],
         { duration: 520, delay: index * 65, easing: 'cubic-bezier(.22,1,.36,1)' });
     });
+    journeyReceipt.getAnimations().forEach(animation => animation.cancel());
+    journeyReceipt.animate(
+      [{ opacity: 0, clipPath: 'inset(0 0 100% 0)', translate: '0 -10px' }, { opacity: 1, clipPath: 'inset(0)', translate: '0 0' }],
+      { duration: 640, delay: 120, easing: 'cubic-bezier(.22,1,.36,1)' });
   }
 
 }
@@ -236,3 +240,28 @@ if (preference.addEventListener) preference.addEventListener('change', () => {
   riverLines.forEach(line => line.style.removeProperty('stroke-dashoffset'));
   requestFlockTick();
 });
+
+// Till-roll numbers: the evidence figures roll up like a market scale.
+if ('IntersectionObserver' in window && !preference.matches) {
+  const numberObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    numberObserver.unobserve(entry.target);
+    const strong = entry.target.querySelector('strong');
+    if (!strong) return;
+    const match = strong.textContent.trim().match(/^(\d+)([.,](\d+))?/);
+    if (!match) return;
+    const target = parseFloat(match[1] + '.' + (match[3] || '0'));
+    const decimals = match[3] ? match[3].length : 0;
+    const suffix = strong.textContent.trim().slice(match[0].length);
+    const started = performance.now();
+    const roll = now => {
+      const t = Math.min(1, (now - started) / 1300);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const shown = (target * eased).toFixed(decimals).replace('.', ',');
+      strong.textContent = shown + suffix;
+      if (t < 1) requestAnimationFrame(roll);
+    };
+    requestAnimationFrame(roll);
+  }), { threshold: .55 });
+  $$('.evidence-card').forEach(card => numberObserver.observe(card));
+}
