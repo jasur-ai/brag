@@ -36,11 +36,10 @@ function renderScroll() {
     });
     narrative.dataset.storyPhase = String(closest);
   }
-  if (preference.matches) { artImage.style.removeProperty('transform'); artLabel.style.removeProperty('translate'); return; }
+  if (preference.matches) { artLabel.style.removeProperty('translate'); return; }
   const rect = storyLayout.getBoundingClientRect();
   if (rect.bottom <= 0 || rect.top >= height) return;
   const p = Math.max(0, Math.min(1, (height - rect.top) / (height + rect.height)));
-  artImage.style.transform = `scale(1.08) translateY(${((p - .5) * -5).toFixed(2)}%)`;
   artLabel.style.translate = `0 ${((p - .5) * -28).toFixed(1)}px`;
 }
 function scheduleScroll() { if (!framePending) { framePending = true; requestAnimationFrame(renderScroll); } }
@@ -167,16 +166,73 @@ function scrubFork(){
   });
 }
 
+// Paper-theater layers (the message-to-ukraine method): hills, engraving and scraps
+// each travel at their own speed — the swipe builds the depth of the scene.
+const heroScene = document.querySelector('.hero-image');
+const heroImgEl = heroScene ? heroScene.querySelector('img') : null;
+const hillFar = document.querySelector('.hill-far');
+const hillNear = document.querySelector('.hill-near');
+const ecoHero = document.querySelector('.eco-hero');
+const heroCopy = document.querySelector('.hero-copy');
+const artFrame = document.querySelector('.story-art-frame');
+const artImg = artFrame ? artFrame.querySelector('img') : null;
+const riverLines = artFrame ? Array.from(artFrame.querySelectorAll('.river-line')) : [];
+const driftScraps = artFrame ? Array.from(artFrame.querySelectorAll('.drift-scrap')) : [];
+const closingSection = document.querySelector('.eco-closing');
+const closingHills = document.querySelector('.closing-hills');
+
+function layerInView(rect, h) { return rect.bottom > -60 && rect.top < h + 60; }
+
+function paperTheater(){
+  if (preference.matches) return;
+  const h = innerHeight;
+  if (heroScene && layerInView(heroScene.getBoundingClientRect(), h)) {
+    const r = heroScene.getBoundingClientRect();
+    const p = clamp01((h - r.top) / (h + r.height));
+    if (heroImgEl) heroImgEl.style.translate = '0 ' + ((p - .5) * 46).toFixed(1) + 'px';
+    if (hillFar) hillFar.style.translate = '0 ' + ((p - .5) * -118).toFixed(1) + 'px';
+    if (hillNear) hillNear.style.translate = '0 ' + ((p - .5) * -206).toFixed(1) + 'px';
+  }
+  if (ecoHero && heroCopy && layerInView(ecoHero.getBoundingClientRect(), h)) {
+    const r = ecoHero.getBoundingClientRect();
+    const p = clamp01((h - r.top) / (h + r.height));
+    heroCopy.style.translate = '0 ' + ((p - .5) * 36).toFixed(1) + 'px';
+  }
+  const layoutEl = (typeof storyLayout !== 'undefined' && storyLayout) ? storyLayout : artFrame;
+  if (artFrame && layoutEl && layerInView(layoutEl.getBoundingClientRect(), h)) {
+    const r = artFrame.getBoundingClientRect();
+    const lr = layoutEl.getBoundingClientRect();
+    const q = clamp01((h * 0.85 - lr.top) / (lr.height + h * 0.7));
+    if (artImg) artImg.style.translate = '0 ' + ((q - .5) * -64).toFixed(1) + 'px';
+    riverLines.forEach((line, i) => {
+      line.style.strokeDashoffset = String(430 * (1 - clamp01(q * 1.35 - i * 0.14)));
+    });
+    driftScraps.forEach((scrap, i) => {
+      const x = (-0.05 + q * 0.82 + i * 0.07) * r.width;
+      const y = Math.sin((q * 2.4 + i * 0.85) * Math.PI) * 10;
+      scrap.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + (q * 44 - 20 + i * 16).toFixed(1) + 'deg)';
+    });
+  }
+  if (closingSection && closingHills && layerInView(closingSection.getBoundingClientRect(), h)) {
+    const r = closingSection.getBoundingClientRect();
+    const p = clamp01((h - r.top) / (h + r.height));
+    closingHills.style.translate = '0 ' + ((p - .5) * -86).toFixed(1) + 'px';
+  }
+}
+
 let flockTick = false;
 function requestFlockTick(){
   if (flockTick) return;
   flockTick = true;
-  requestAnimationFrame(() => { flockTick = false; moveFlock(); scrubFork(); });
+  requestAnimationFrame(() => { flockTick = false; moveFlock(); scrubFork(); paperTheater(); });
 }
 addEventListener('scroll', requestFlockTick, { passive: true });
 addEventListener('resize', requestFlockTick);
 requestFlockTick();
 if (preference.addEventListener) preference.addEventListener('change', () => {
   heroBirds.forEach(bird => bird.style.removeProperty('transform'));
+  [heroImgEl, hillFar, hillNear, heroCopy, artImg, closingHills].forEach(el => el && el.style.removeProperty('translate'));
+  driftScraps.forEach(scrap => scrap.style.removeProperty('transform'));
+  riverLines.forEach(line => line.style.removeProperty('stroke-dashoffset'));
   requestFlockTick();
 });
