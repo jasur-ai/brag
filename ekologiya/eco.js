@@ -228,7 +228,7 @@ let flockTick = false;
 function requestFlockTick(){
   if (flockTick) return;
   flockTick = true;
-  requestAnimationFrame(() => { flockTick = false; moveFlock(); scrubFork(); paperTheater(); });
+  requestAnimationFrame(() => { flockTick = false; moveFlock(); scrubFork(); paperTheater(); letterScrubTick(); });
 }
 addEventListener('scroll', requestFlockTick, { passive: true });
 addEventListener('resize', requestFlockTick);
@@ -265,3 +265,106 @@ if ('IntersectionObserver' in window && !preference.matches) {
   }), { threshold: .55 });
   $$('.evidence-card').forEach(card => numberObserver.observe(card));
 }
+
+
+/* ── Deposit automat cycle: sensor scans, coins pay back ── */
+function automatScene(){
+  const stage=document.querySelector('.automat-stage');
+  if(!stage) return;
+  const btn=document.getElementById('automat-btn');
+  const statusEl=document.getElementById('auto-status');
+  const detailEl=document.getElementById('auto-detail');
+  const amountEl=document.getElementById('auto-amount');
+  const coins=Array.from(stage.querySelectorAll('.auto-coin'));
+  if(preference.matches){
+    stage.classList.add('stage-done');
+    statusEl.textContent='GAROV QAYTARILDI';
+    detailEl.textContent='Tangalar laganda.';
+    amountEl.textContent='1 000 söm';
+    return;
+  }
+  let busy=false;const timers=[];
+  function setStatus(t,d){statusEl.textContent=t;detailEl.textContent=d}
+  function rollAmount(){
+    amountEl.textContent='0 söm';
+    const target=1000;const started=performance.now();
+    (function step(){
+      const t=Math.min(1,Math.max(0,(performance.now()-started)/1100));
+      const eased=1-Math.pow(1-t,3);
+      amountEl.textContent=(t===1?target:Math.round(target*eased)).toLocaleString('ru-RU').replace(/\u00A0/g,' ')+' söm';
+      if(t<1) requestAnimationFrame(step);
+      else amountEl.textContent='1 000 söm';
+    })();
+  }
+  function run(){
+    if(busy) return;
+    busy=true;
+    while(timers.length) clearTimeout(timers.pop());
+    stage.classList.remove('stage-scan','stage-coins','stage-done');
+    void stage.offsetWidth;
+    setStatus('IDISH QABUL QILINDI','Teshikdan ichkariga tushdi.');
+    timers.push(setTimeout(function(){
+      stage.classList.add('stage-scan');
+      setStatus('SENSOR: PET \u00B7 ANIQLANDI','Datchik shakl va materialni öqiydi.');
+    },850));
+    timers.push(setTimeout(function(){
+      stage.classList.add('stage-coins');
+      coins.forEach(function(c,i){c.style.animationDelay=(0.1+i*0.14)+'s'});
+      setStatus('GAROV HISOBLANDI','Tangalar laganga tushadi.');
+      rollAmount();
+    },2350));
+    timers.push(setTimeout(function(){
+      stage.classList.add('stage-done');
+      setStatus('GAROV QAYTARILDI','Tangalarni lagandan oling.');
+      if(btn&&btn.firstChild) btn.firstChild.nodeValue='YANA SINAB K\u00D6RING ';
+      busy=false;
+    },3450));
+  }
+  if(btn) btn.addEventListener('click',run);
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){run();io.disconnect();}
+    })},{threshold:.35});
+    io.observe(stage);
+  } else run();
+}
+
+/* ── Scattered letters composing as the line reaches you ── */
+let letterItems=[];
+function letterScrubTick(){
+  if(!letterItems.length) return;
+  const h=window.innerHeight;
+  letterItems.forEach(function(item){
+    const r=item.el.getBoundingClientRect();
+    const p=clamp01((h*0.94-r.top)/(h*0.5));
+    const k=1-p;
+    for(let i=0;i<item.chars.length;i++){
+      const sd=item.seed[i];
+      item.chars[i].style.transform='translate('+(sd.dx*k).toFixed(1)+'px,'+(sd.dy*k).toFixed(1)+'px) rotate('+(sd.rot*k).toFixed(1)+'deg)';
+      item.chars[i].style.opacity=(0.3+0.7*p).toFixed(2);
+    }
+  });
+}
+function letterScrub(){
+  if(preference.matches) return;
+  const groups=Array.from(document.querySelectorAll('.letters'));
+  if(!groups.length) return;
+  letterItems=groups.map(function(el){
+    const text=el.textContent;
+    el.textContent='';
+    const chars=Array.from(text).map(function(ch){
+      const i=document.createElement('i');
+      i.textContent=ch===' '?'\u00A0':ch;
+      el.appendChild(i);
+      return i;
+    });
+    const seed=chars.map(function(c,i){
+      const code=c.textContent.charCodeAt(0)||32;
+      return{dx:((code*37+i*91)%120)-60,dy:((code*53+i*17)%70)-14,rot:((code*29+i*13)%22)-11};
+    });
+    return{el:el,chars:chars,seed:seed};
+  });
+  letterScrubTick();
+}
+automatScene();
+letterScrub();

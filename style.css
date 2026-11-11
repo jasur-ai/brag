@@ -337,3 +337,7 @@ i{letter-spacing:-.035em}
 .hero-topline span,.hero-title,.hero-baseline{opacity:1;animation:none}
 }
 @media(max-width:650px){.food-tag{animation:none}}
+
+/* Paper grain */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.07;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+@media (prefers-reduced-motion: reduce){body::after{display:none}}

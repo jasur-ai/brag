@@ -55,3 +55,32 @@ bitta nafasda o‘qiladigan gaplar.
 Vizual uslub: Obys (The Message to Ukraine) + Eleken 50 namunasi tahlili
 (bkz. `docs/TOP-SITES-NOTES.md`). Bu hujjat — shu tahlil va foydalanuvchi
 talabidan hosil bo‘lgan amaliy tamoyillar to‘plami.
+
+## The Message to Ukraine — chuqur texnika tahlili (2026-11-11)
+
+Manba: `themessagetoukraine.obys.agency` (Obys) butun sahifa bo‘yicha o‘rganildi.
+Qo‘llaniladigan texnikalar ro‘yxati va ularning bizdagi ifodasi:
+
+| # | Texnika (asl saytda) | Bizdagi ifoda |
+|---|---|---|
+| 1 | **Skroll bilan yig‘iluvchi harflar** — she’r so‘zlari parchalarga bo‘lingan, swipe qilganda joyiga o‘tiradi | Fork sarlavhasi harflari skroll bilan yig‘iladi (`letterScatter`) |
+| 2 | **Qatlamli kollaj** — naqsh/gravyura qatlamlari bir-biriga nisbatan siljiydi | Qog‘oz tog‘ qatlamlari, daryo gravyurasi, suzuvchi parchalar |
+| 3 | **Bir qadam — bir sahna** (poem beats) | “Içildi/Taşlandi/Va qolaverdi” uch zarba; 4 ta yo‘l bosqichi |
+| 4 | **Skrub qilinadigan parallax** — hech narsa o‘zi o‘ynamaydi | Qushlar, tog‘lar, fork chiziqlari — hammasi swipe bilan |
+| 5 | **Sanoq sahnalari** (shahar raqamlari) | Dalillar raqamlari kassa sanag‘idek sanaladi |
+| 6 | **Katta harflar — grafik element** sifatida (sochilib yotadi, yig‘iladi) | Sarlavha harflari scatter→compose |
+| 7 | **Marquee lentasi** (footer UKRAINE-UKRAINE) | Eco tiker, uy sahifasi marquee |
+| 8 | **Muhr/shtamp elementlari** (qo‘lyozma, muhr) | “GAROV QAYTARILDI” muhri, visual-stamp, qalam chiziqlari |
+| 9 | **To‘liq ekran sahna** — tasvir va matn ustma-ust | Hero foto+qatlam, gravyura+yorliq |
+| 10 | **Yopiq rang palitrasi** — krem/siyoh/qo‘lda chiziq | Butun sayt: qog‘oz, siyoh, sage, gravyura |
+
+Qoida: har bir yangi animatsiya shu jadvaldagi joyiga mos bo‘lsin va matnni
+o‘rniga emas, uni ko‘rsatish uchun xizmat qilsin.
+
+## Garov avtomati (yangi sahna, 2026-11-11)
+
+Foydalanuvchi talabi: pul qaytarish **sensor/skaner va tanga** orqali bo‘lsin
+(Germaniya Pfand avtomati kabi). Sahna tsikli: butilka teshikka kiradi →
+datchik skanerlashi (yorug‘ chiziq + nurlanish) → ekranda “PET · ANIQLANDI” →
+tangalar laganda to‘planadi → “GAROV QAYTARILDI” muhri. Fork o‘ng yo‘li shu
+avtomatga olib boradi (vizual ip).
