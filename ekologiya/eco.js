@@ -303,7 +303,7 @@ function automatScene(){
     while(timers.length) clearTimeout(timers.pop());
     stage.classList.remove('stage-scan','stage-coins','stage-done');
     void stage.offsetWidth;
-    setStatus('IDISH QABUL QILINDI','Teshikdan ichkariga tushdi.');
+    setStatus('IDIŞ QABUL QILINDI','Teshikdan ichkariga tushdi.');
     timers.push(setTimeout(function(){
       stage.classList.add('stage-scan');
       setStatus('SENSOR: PET \u00B7 ANIQLANDI','Datchik shakl va materialni öqiydi.');

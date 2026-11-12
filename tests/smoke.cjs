@@ -124,10 +124,12 @@ test('flying flocks animate the skies on both pages', async () => {
 
 test('ecology evidence wears animated stat rings', async () => {
   const eco = await (await fetch(base + '/ekologiya/')).text();
-  assert.equal((eco.match(/class="stat-ring"/g) || []).length, 3);
+  assert.equal((eco.match(/class="stat-ring"/g) || []).length, 6);
   assert.match(eco, /--p:\.919/);
   assert.match(eco, /--p:\.85/);
   assert.match(eco, /--p:\.31/);
+  assert.match(eco, /--p:\.98/);
+  assert.match(eco, /--p:\.9"/);
   assert.match(eco, /class="eco-ticker"/);
   assert.match(eco, /class="station reveal"/);
 });
