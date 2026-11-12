@@ -228,7 +228,7 @@ let flockTick = false;
 function requestFlockTick(){
   if (flockTick) return;
   flockTick = true;
-  requestAnimationFrame(() => { flockTick = false; moveFlock(); scrubFork(); paperTheater(); letterScrubTick(); });
+  requestAnimationFrame(() => { flockTick = false; moveFlock(); scrubFork(); paperTheater(); letterScrubTick(); scrollMarquee(); });
 }
 addEventListener('scroll', requestFlockTick, { passive: true });
 addEventListener('resize', requestFlockTick);
@@ -247,19 +247,20 @@ if ('IntersectionObserver' in window && !preference.matches) {
     if (!entry.isIntersecting) return;
     numberObserver.unobserve(entry.target);
     const strong = entry.target.querySelector('strong');
-    if (!strong) return;
-    const match = strong.textContent.trim().match(/^(\d+)([.,](\d+))?/);
+    const num = entry.target.querySelector('.ev-num');
+    if (!strong || !num) return;
+    const raw = num.textContent.trim();
+    const match = raw.match(/^(\d+)([.,](\d+))?/);
     if (!match) return;
     const target = parseFloat(match[1] + '.' + (match[3] || '0'));
     const decimals = match[3] ? match[3].length : 0;
-    const suffix = strong.textContent.trim().slice(match[0].length);
     const started = performance.now();
     const roll = () => {
       const t = Math.min(1, Math.max(0, (performance.now() - started) / 1300));
       const eased = 1 - Math.pow(1 - t, 3);
-      strong.textContent = (target * eased).toFixed(decimals).replace('.', ',') + suffix;
+      num.textContent = (t === 1 ? raw : (target * eased).toFixed(decimals).replace('.', ','));
       if (t < 1) requestAnimationFrame(roll);
-      else strong.textContent = target.toFixed(decimals).replace('.', ',') + suffix;
+      else { num.textContent = raw; strong.classList.add('settled'); }
     };
     requestAnimationFrame(roll);
   }), { threshold: .55 });
@@ -368,3 +369,27 @@ function letterScrub(){
 }
 automatScene();
 letterScrub();
+
+/* ── Marquee follows the swipe; evidence sheets drift like loose papers ── */
+function scrollMarquee(){
+  const cards = document.querySelectorAll('.evidence-card');
+  if(preference.matches){
+    cards.forEach(function(c){c.style.removeProperty('translate')});
+    return;
+  }
+  const track = document.querySelector('.eco-ticker-track');
+  if(track){
+    const period = track.scrollWidth / 3;
+    if(period > 0){
+      const x = -((window.scrollY * 0.32) % period);
+      track.style.transform = 'translateX(' + x.toFixed(1) + 'px)';
+    }
+  }
+  const h = window.innerHeight;
+  cards.forEach(function(card,i){
+    const r = card.getBoundingClientRect();
+    if(r.bottom < -80 || r.top > h + 80) return;
+    const p = (h - r.top) / (h + r.height) - .5;
+    card.style.translate = '0 ' + (p * (i % 2 ? -36 : -18)).toFixed(1) + 'px';
+  });
+}

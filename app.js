@@ -347,6 +347,12 @@ const flockScenes = Array.from(document.querySelectorAll('.hero, .poem-scene, .m
   scene,
   birds: Array.from(scene.querySelectorAll('.fly-bird'))
 }));
+function marqueeScrub(){
+  const track = document.querySelector('.eco-marquee-track');
+  if (!track || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const period = track.scrollWidth / 2;
+  if (period > 0) track.style.transform = 'translateX(' + (-((window.scrollY * 0.3) % period)).toFixed(1) + 'px)';
+}
 function moveFlocks(){
   if (reducedMotion) return;
   const h = window.innerHeight;
@@ -366,7 +372,7 @@ let flockTick = false;
 function requestFlockTick(){
   if (flockTick) return;
   flockTick = true;
-  requestAnimationFrame(() => { flockTick = false; moveFlocks(); });
+  requestAnimationFrame(() => { flockTick = false; moveFlocks(); marqueeScrub(); });
 }
 window.addEventListener('scroll', requestFlockTick, { passive: true });
 window.addEventListener('resize', requestFlockTick);
