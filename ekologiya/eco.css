@@ -379,3 +379,5 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:60;opa
  .js .stat-figure strong.settled span{animation:none!important}
  .eco-ticker-track{transform:none!important}
 }
+
+.fork-svg{overflow:visible}
